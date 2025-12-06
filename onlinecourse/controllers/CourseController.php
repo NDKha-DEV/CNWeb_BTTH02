@@ -49,7 +49,80 @@ class CourseController{
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $this->course->title = $_POST['title'];
             $this->course->description = $_POST['discription'];
-            $this->course->
+            $this->course->price = $_POST['price'];
+            $this->course->category_id = $_POST['category_id'];
+            $this->course->duration_weeks = $_POST['duration_weeks'];
+            $this->course->level = $_POST['level'];
+
+            //Lấy instructor_id từ session hiện tại 
+            $this->course->instructor_id = AuthController::getCurrentUserId();
+
+            //Xử lý load ảnh
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+
+                // Cấu hình thư mục và giới hạn
+                $target_dir = "assets/uploads/courses/";
+                $max_size = 2 * 1024 * 1024; // 2MB
+                $allowed_extensions = ['jpeg', 'jpg', 'png'];
+
+                // Kiểm tra và tạo thư mục nếu chưa tồn tại
+                if (!is_dir($target_dir)) {
+                    mkdir($target_dir, 0777, true);
+                }
+
+                // Lấy thông tin file
+                $file_tmp = $_FILES['image']['tmp_name'];
+                $file_name_original = $_FILES['image']['name'];
+                $file_size = $_FILES['image']['size'];
+
+                // Lấy đuôi file an toàn hơn bằng pathinfo
+                $file_ext = strtolower(pathinfo($file_name_original, PATHINFO_EXTENSION));
+
+                // Mảng chứa lỗi
+                $errors = [];
+
+                // Validate (Kiểm tra)
+                // Kiểm tra định dạng
+                if (!in_array($file_ext, $allowed_extensions)) {
+                    $errors[] = "Chỉ hỗ trợ upload file định dạng: " . implode(', ', $allowed_extensions);
+                }
+
+                // Kiểm tra kích thước
+                if ($file_size > $max_size) {
+                    $errors[] = 'Kích thước file không được lớn hơn 2MB.';
+                }
+
+                // Xử lý upload
+                if (empty($errors)) {
+                    // Tạo tên file mới: time + random string + ext để đảm bảo KHÔNG BAO GIỜ trùng
+                    $new_file_name = time() . '_' . uniqid() . '.' . $file_ext;
+                    $target_file = $target_dir . $new_file_name;
+
+                    if (move_uploaded_file($file_tmp, $target_file)) {
+                        // Upload thành công
+                        echo "Success";
+                        
+                    } else {
+                        echo "Lỗi khi di chuyển file (Check permissions).";
+                    }
+                } else {
+                    // Xuất lỗi
+                    foreach ($errors as $error) {
+                        echo $error . "<br>";
+                    }
+                }
+            } else {
+                // Xử lý trường hợp có lỗi từ phía server hoặc chưa chọn file
+                if (isset($_FILES['image']['error']) && $_FILES['image']['error'] !== 4) {
+                    echo "Có lỗi xảy ra khi upload. Mã lỗi: " . $_FILES['image']['error'];
+                }
+            }
+
+            if($this->course->create()){
+                header("location: index.php?controller=course&action=index");
+            }else{
+                echo "Lỗi tạo khóa học";
+            }
         }
     }
 }
