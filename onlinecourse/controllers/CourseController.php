@@ -70,6 +70,65 @@ class CourseController{
         }
     }
 
+
+    // Chức năng chỉnh sửa
+    public function edit($id) {
+        $this->requirePermission();
+
+        $this->course->id = $id;
+        if($this->course->readOne($id)){
+            if(!$this->checkOwnership($this->course->instructor_id)){
+                die("Bạn không có quyền chỉnh sửa khóa học của người khác");
+            }
+
+            $categories = $this->category->readAll();
+            require_once '../views/instructor/course/edit.php';
+        }else{
+            echo "Không tìm thấy khóa học";
+        }
+    }
+
+    public function update($id) {
+        $this->requirePermission();
+
+        $this->course->id = $id;
+        if(!$this->checkOwnership($this->course->instructor_id)){
+            die("Hành động bị từ chối.");
+        }
+
+        $oldImageName = $this->course->image;
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            $this->bindCourseData($_POST);
+
+            $this->course->id = $id;
+
+            if(!empty($_FILES['image']['name']))
+            {   
+                $uploadResult = $this->hanldeImageUpload($_FILES['image']);
+
+                if($uploadResult['success']){
+                    $this->course->image = $uploadResult['fileName'];
+
+                    $this->deleteOldImage($uploadResult['fileName']);
+                }else{
+                    die("Lỗi upload: " . implode(', ', $uploadResult['errors']));
+                }
+            }else
+            {
+                $this->course->image = $oldImageName;
+            } 
+
+            if($this->course->update())
+            {
+                header("Location: index.php?controller=course&action=index");
+                exit();
+            }else{
+                echo "Lỗi khi không cập nhật cơ sở dữ liệu.";
+            }
+        }
+    }
     // Các hàm hỗ trợ
     private function hanldeImageUpload($file) {
         // Config
@@ -116,5 +175,12 @@ class CourseController{
         $this->course->category_id    = $data['category_id'] ?? null;
         $this->course->duration_weeks = $data['duration_weeks'] ?? 0;
         $this->course->level          = $data['level'] ?? 'Beginner';
+    }
+
+    private function deleteOldImage($fileName) {
+        $target_dir = "assets/uploads/courses/";
+        if(!empty($fileName) && !$fileName != 'default.jpg' && file_exists($target_dir . $fileName)){
+            unlink($target_dir . $fileName);
+        }
     }
 }
