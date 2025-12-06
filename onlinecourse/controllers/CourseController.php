@@ -129,6 +129,16 @@ class CourseController{
             }
         }
     }
+
+    // Chức năng Xóa
+    public function delete($id) {
+        $this->course->id = $id;
+        if($this->course->delete()){
+            header("Location: index.php?controller=course&action=index");
+        }else{
+            echo "Lỗi khi không xóa ở cơ sở dữ liệu";
+        }
+    }
     // Các hàm hỗ trợ
     private function hanldeImageUpload($file) {
         // Config
