@@ -43,5 +43,13 @@ class CourseController{
         require_once '../views/instructor/course/create.php';
     }
 
-    
+    public function store() {
+        $this->requirePermission();
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $this->course->title = $_POST['title'];
+            $this->course->description = $_POST['discription'];
+            $this->course->
+        }
+    }
 }

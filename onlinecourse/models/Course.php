@@ -2,16 +2,16 @@
 class Course{
     private $conn;
     private $table_name ="courses";
-    private $id;
-    private $title;
-    private $description;
-    private $instructor_id;
-    private $category_id;
-    private $price;
-    private $duration_weeks;
-    private $level;
-    private $image;
-    private $created_at;
+    public $id;
+    public $title;
+    public $description;
+    public $instructor_id;
+    public $category_id;
+    public $price;
+    public $duration_weeks;
+    public $level;
+    public $image;
+    public $created_at;
 
     public function __construct($db){
         $this->conn = $db;
