@@ -1,6 +1,10 @@
 <?php
 session_start();
+require_once 'models/Course.php';
+require_once 'models/Category.php';
+require_once 'config/Database.php';
 require_once 'controllers/CourseController.php';
+require_once 'controllers/HomeController.php';
 // ... require các controller khác
 
 $controller = isset($_GET['controller']) ? $_GET['controller'] : 'home';
@@ -8,6 +12,14 @@ $action     = isset($_GET['action']) ? $_GET['action'] : 'index';
 $id         = isset($_GET['id']) ? $_GET['id'] : null;
 
 switch ($controller) {
+    case 'home':
+        $home = new HomeController();
+        switch ($action) {
+            case 'index': 
+                $home->index();
+                break;
+        }
+        break;
     case 'course':
         $courseController = new CourseController();
         switch ($action) {

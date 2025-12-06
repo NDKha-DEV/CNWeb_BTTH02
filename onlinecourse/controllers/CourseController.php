@@ -6,8 +6,8 @@ require_once 'config/Database.php';
 
 class CourseController{
     private $db;
-    private $course;
-    private $category;
+    public $course;
+    public $category;
 
     public function __construct(){
         $database = new Database();

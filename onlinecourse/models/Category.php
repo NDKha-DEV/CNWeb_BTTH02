@@ -13,8 +13,9 @@ class Category{
     public function readAll(){
         $query = "Select id , name From " . $this->table_name ." Order By name";
         $stmt = $this->conn->prepare($query);
-
-        return $stmt->execute();
+        $stmt->execute();
+        return $stmt;
     }
 }
+
 ?>
