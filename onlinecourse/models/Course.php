@@ -41,6 +41,27 @@ class Course{
         return false;
     }
 
+    public function readOne() {
+        $query = "Select * From " . $this->table_name ." where id = ? Limit 0,1;";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $this->id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if($row){
+            $this->title = $row['title'];
+            $this->description = $row['description'];
+            $this->instructor_id = $row['instructor_id'];
+            $this->category_id = $row['category_id'];
+            $this->price = $row['price'];
+            $this->duration_weeks = $row['duration_weeks'];
+            $this->level = $row['level'];
+            $this->image = $row['image'];
+            return true;
+        }
+        return false;
+    }
+
     public function update() {
         $query = "Update " . $this->table_name . 
                     "Set title = :title,
