@@ -16,7 +16,16 @@ class Course{
     public function __construct($db){
         $this->conn = $db;
     }
-        
+    
+    public function readAll(){
+        $query = "Select * From ". $this->table_name ;
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute();
+
+        return $stmt;
+    }
     public function create(){
         $query = "Insert Into" . $this->table_name . "
                     (title, description, instructor_id, category_id, price, duration_weeks, level, image)
