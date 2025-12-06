@@ -1,8 +1,8 @@
 <?php 
 require_once 'AuthController.php';
-require_once '../models/Course.php';
-require_once '../models/Category.php';
-require_once '../config/Database.php';
+require_once 'models/Course.php';
+require_once 'models/Category.php';
+require_once 'config/Database.php';
 
 class CourseController{
     private $db;
@@ -13,7 +13,7 @@ class CourseController{
         $database = new Database();
         $this->db = $database->getConnection();
         $this->course = new Course($this->db);
-        $this->catergory = new Category($this->db);
+        $this->category = new Category($this->db);
     }
 
     // Chặn truy cập nếu không có quyền truy cập
@@ -40,7 +40,7 @@ class CourseController{
         $this->requirePermission();
 
         $categories = $this->category->readAll();
-        require_once '../views/instructor/course/create.php';
+        require_once 'views/instructor/course/create.php';
     }
 
     public function store() {
@@ -53,7 +53,7 @@ class CourseController{
             $this->course->instructor_id = AuthController::getCurrentUserId();
 
             // Xử lý upload ảnh
-            $uploadResult = $this->hanldeImageUpload($_FILES['image']);
+            $uploadResult = $this->handleImageUpload($_FILES['image']);
                 
             if($uploadResult['success'] ){
                 $this->course->image = $uploadResult['fileName'];
@@ -76,13 +76,13 @@ class CourseController{
         $this->requirePermission();
 
         $this->course->id = $id;
-        if($this->course->readOne($id)){
+        if($this->course->readOne()){
             if(!$this->checkOwnership($this->course->instructor_id)){
                 die("Bạn không có quyền chỉnh sửa khóa học của người khác");
             }
 
             $categories = $this->category->readAll();
-            require_once '../views/instructor/course/edit.php';
+            require_once 'views/instructor/course/edit.php';
         }else{
             echo "Không tìm thấy khóa học";
         }
@@ -106,7 +106,7 @@ class CourseController{
 
             if(!empty($_FILES['image']['name']))
             {   
-                $uploadResult = $this->hanldeImageUpload($_FILES['image']);
+                $uploadResult = $this->handleImageUpload($_FILES['image']);
 
                 if($uploadResult['success']){
                     $this->course->image = $uploadResult['fileName'];
@@ -140,7 +140,7 @@ class CourseController{
         }
     }
     // Các hàm hỗ trợ
-    private function hanldeImageUpload($file) {
+    private function handleImageUpload($file) {
         // Config
         $target_dir = "assets/uploads/courses/";
         $max_size = 2 *1024 * 1024;
@@ -156,7 +156,7 @@ class CourseController{
         $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
         //validate
-        if(!in_array($file, $allowed_extentions)){
+        if(!in_array($file_ext, $allowed_extentions)){
             $result['errors'][] = "Chỉ hỗ trợ file: ". implode(', ', $allowed_extentions);
         }
         if($file['size'] > $max_size){
@@ -189,7 +189,7 @@ class CourseController{
 
     private function deleteOldImage($fileName) {
         $target_dir = "assets/uploads/courses/";
-        if(!empty($fileName) && !$fileName != 'default.jpg' && file_exists($target_dir . $fileName)){
+        if(!empty($fileName) && $fileName != 'default.jpg' && file_exists($target_dir . $fileName)){
             unlink($target_dir . $fileName);
         }
     }
