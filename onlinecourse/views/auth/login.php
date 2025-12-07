@@ -17,7 +17,7 @@ ob_start();
 
     <button type="submit">Đăng nhập</button>
 </form>
-<p>Chưa có tài khoản? <a href="/onlinecourse/register">Đăng ký ngay!</a></p>
+<p>Chưa có tài khoản? <a href="<?php echo BASE_URL; ?>auth/register">Đăng ký ngay!</a></p>
 
 <?php 
 $content = ob_get_clean();

@@ -1,8 +1,6 @@
 <?php
 // onlinecourse/controllers/AuthController.php
 
-// Định nghĩa BASE_URL để chuyển hướng an toàn trên XAMPP
-// define('BASE_URL', '/onlinecourse/');
 
 require_once 'config/Database.php';
 require_once 'models/User.php';
@@ -51,7 +49,7 @@ class AuthController{
                 $_SESSION['username'] = $user['username'];
                 
                 // 4. Chuyển hướng thành công (đến trang chào mừng)
-                header('Location: ' . BASE_URL . 'welcome');
+                header('Location: ' . BASE_URL . 'home');
                 exit;
             } else {
                 
@@ -83,7 +81,7 @@ class AuthController{
             if ($this->userModel->create()) {
                 
                 // Đăng ký thành công, chuyển hướng đến trang đăng nhập
-                header('Location: ' . BASE_URL . 'login?success=registered');
+                header('Location: ' . BASE_URL . 'auth/login');
                 exit;
             } else {
                 

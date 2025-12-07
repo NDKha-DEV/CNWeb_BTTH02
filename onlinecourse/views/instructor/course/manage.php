@@ -57,11 +57,11 @@
                         <?php 
                             // Nếu có tên ảnh thì nối đường dẫn, nếu không thì dùng ảnh mặc định
                             $imgName = !empty($row['image']) ? $row['image'] : 'default.jpg';
-                            $imgPath = "assets/uploads/courses/" . $imgName;
-                            
+                            $sysPath = "assets/uploads/courses/" . $imgName;
+                            $webPath = BASE_URL . "assets/uploads/courses/" . $imgName;
                             // Kiểm tra file có thật trên ổ cứng không
-                            if (file_exists($imgPath)) {
-                                echo '<img src="'.$imgPath.'" class="thumb-img">';
+                            if (file_exists($sysPath)) {
+                                echo '<img src="'.$webPath.'" class="thumb-img">';
                             } else {
                                 echo '<span style="color:red; font-size:12px">Ảnh lỗi</span>';
                             }
@@ -108,7 +108,7 @@
     </table>
 
     <br>
-    <a href="index.php?controller=home" style="text-decoration: none; color: #555;">← Quay về trang chủ</a>
+    <a href="<?php echo BASE_URL; ?>home" style="text-decoration: none; color: #555;">← Quay về trang chủ</a>
 
 </body>
 </html>

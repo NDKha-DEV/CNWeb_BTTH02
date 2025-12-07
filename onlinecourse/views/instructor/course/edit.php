@@ -83,10 +83,11 @@
                 <?php 
                     // Xây dựng đường dẫn ảnh
                     $imgName = !empty($this->course->image) ? $this->course->image : 'default.jpg';
-                    $imgPath = "assets/uploads/courses/" . $imgName;
+                    $sysPath = "assets/uploads/courses/" . $imgName;
+                    $webPath = BASE_URL . "assets/uploads/courses/" . $imgName;
 
-                    if (file_exists($imgPath)) {
-                        echo "<img src='$imgPath' alt='Course Image'>";
+                    if (file_exists($sysPath)) {
+                        echo "<img src='$webPath' alt='Course Image'>";
                     } else {
                         echo "<span style='color:red'>Ảnh không tồn tại ($imgName)</span>";
                     }
