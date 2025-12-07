@@ -23,11 +23,11 @@
     
     <div class="menu">
         <h3>Menu Điều Hướng</h3>
-        <a href="index.php?controller=course&action=create" class="btn btn-green">
+        <a href="course/create" class="btn btn-green">
             + Tạo khóa học mới
         </a>
 
-        <a href="index.php?controller=course&action=index" class="btn">
+        <a href="course/index" class="btn">
             Quản lý khóa học
         </a>
     </div>

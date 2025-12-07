@@ -2,7 +2,7 @@
 // onlinecourse/controllers/AuthController.php
 
 // Định nghĩa BASE_URL để chuyển hướng an toàn trên XAMPP
-define('BASE_URL', '/onlinecourse/');
+// define('BASE_URL', '/onlinecourse/');
 
 require_once 'config/Database.php';
 require_once 'models/User.php';

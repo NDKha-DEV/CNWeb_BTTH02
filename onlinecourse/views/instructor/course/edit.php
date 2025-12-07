@@ -27,7 +27,7 @@
 <div class="container">
     <h2>✏️ Chỉnh sửa khóa học</h2>
     
-    <form action="index.php?controller=course&action=update&id=<?php echo $this->course->id; ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo BASE_URL; ?>course/update/<?php echo $this->course->id; ?>" method="POST" enctype="multipart/form-data">
 
         <div class="form-group">
             <label>Tiêu đề khóa học (*):</label>
@@ -101,7 +101,7 @@
         <hr>
         
         <button type="submit" class="btn btn-submit">Lưu cập nhật</button>
-        <a href="index.php?controller=course&action=index" class="btn btn-back">Hủy bỏ</a>
+        <a href="<?php echo BASE_URL; ?>course/index" class="btn btn-back">Hủy bỏ</a>
 
     </form>
 </div>

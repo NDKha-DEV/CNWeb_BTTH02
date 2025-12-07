@@ -6,10 +6,10 @@
 </head>
 <body>
     <h2>Tạo khóa học mới</h2>
-    <a href="index.php?controller=course&action=index">Quay lại danh sách</a>
+    <a href="<?php echo BASE_URL; ?>course/index">Quay lại danh sách</a>
     <hr>
 
-    <form action="index.php?controller=course&action=store" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo BASE_URL; ?>course/store" method="POST" enctype="multipart/form-data">
         
         <div>
             <label>Tiêu đề khóa học:</label><br>

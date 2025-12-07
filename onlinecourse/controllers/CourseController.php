@@ -77,7 +77,7 @@ public function index() {
 
             // Lửu vào DB
             if($this->course->create()){
-                header("location: index.php?controller=course&action=index");
+                header("Location: " . BASE_URL . "course/index"); 
             }else{
                 echo "Lỗi tạo khóa học trong cở sở dữ liệu.";
             }
@@ -145,7 +145,7 @@ public function index() {
 
             if($this->course->update())
             {
-                header("Location: index.php?controller=course&action=index");
+                header("Location: " . BASE_URL . "course/index");
                 exit();
             }else{
                 echo "Lỗi khi không cập nhật cơ sở dữ liệu.";
@@ -157,7 +157,7 @@ public function index() {
     public function delete($id) {
         $this->course->id = $id;
         if($this->course->delete()){
-            header("Location: index.php?controller=course&action=index");
+            header("Location: " . BASE_URL . "course/index");
         }else{
             echo "Lỗi khi không xóa ở cơ sở dữ liệu";
         }

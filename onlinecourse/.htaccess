@@ -19,4 +19,4 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 # 3. Chuyển hướng mọi yêu cầu còn lại (ví dụ: /login, /register)
 # về file index.php. Cờ [L] (Last) kết thúc việc xử lý các quy tắc.
-RewriteRule ^(.*)$ index.php [L]
+RewriteRule ^(.*)$ index.php [QSA,L]

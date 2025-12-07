@@ -8,7 +8,7 @@ ob_start();
     <p style="color: red;"><?php echo $error; ?></p>
 <?php endif; ?>
 
-<form action="/onlinecourse/register" method="POST">
+<form action="<?php echo BASE_URL; ?>auth/register" method="POST">
     
     <label for="username">Tên người dùng (Username):</label>
     <input type="text" id="username" name="username" required><br>

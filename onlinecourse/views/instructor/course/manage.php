@@ -29,7 +29,7 @@
 
     <div class="header">
         <h2>📂 Danh sách khóa học của tôi</h2>
-        <a href="index.php?controller=course&action=create" class="btn btn-add">+ Thêm khóa học mới</a>
+        <a href="<?php echo BASE_URL; ?>course/create" class="btn btn-add">+ Thêm khóa học mới</a>
     </div>
 
     <hr>
@@ -84,11 +84,11 @@
                     </td>
 
                     <td>
-                        <a href="index.php?controller=course&action=edit&id=<?php echo $row['id']; ?>" class="btn btn-edit">
+                        <a href="<?php echo BASE_URL; ?>course/edit/<?php echo $row['id']; ?>" class="btn btn-edit">
                             ✏️ Sửa
                         </a>
 
-                        <a href="index.php?controller=course&action=delete&id=<?php echo $row['id']; ?>" 
+                        <a href="<?php echo BASE_URL; ?>course/delete/<?php echo $row['id']; ?>" 
                            class="btn btn-delete"
                            onclick="return confirm('⚠️ CẢNH BÁO:\nBạn có chắc chắn muốn xóa khóa học này?\nHành động này không thể hoàn tác!');">
                            🗑️ Xóa
@@ -100,7 +100,7 @@
                 <tr>
                     <td colspan="5" style="text-align: center; padding: 20px;">
                         Bạn chưa tạo khóa học nào. <br><br>
-                        <a href="index.php?controller=course&action=create" style="color: blue;">Bấm vào đây để tạo khóa học đầu tiên</a>
+                        <a href="course/create" style="color: blue;">Bấm vào đây để tạo khóa học đầu tiên</a>
                     </td>
                 </tr>
             <?php endif; ?>
