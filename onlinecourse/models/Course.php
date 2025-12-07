@@ -26,10 +26,29 @@ class Course{
 
         return $stmt;
     }
+
+
+    // Hàm lấy tất cả khóa học của một giảng viên cụ thể
+    public function readAllByInstructor($instructor_id) {
+        // 1. Chuẩn bị câu lệnh SQL
+        $query = "SELECT * FROM " . $this->table_name . " WHERE instructor_id = ? ORDER BY created_at DESC";
+
+        // 2. Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // 3. Gán giá trị ID vào dấu ?
+        $stmt->bindParam(1, $instructor_id);
+
+        // 4. Thực thi
+        $stmt->execute();
+
+        // 5. Trả về kết quả
+        return $stmt;
+    }
     public function create(){
-        $query = "Insert Into" . $this->table_name . "
+        $query = "Insert Into " . $this->table_name . " 
                     (title, description, instructor_id, category_id, price, duration_weeks, level, image)
-                    values (:title, :description, :instructor_id, :category_id, :price, : duration_weeks, :level, :image);";
+                    values (:title, :description, :instructor_id, :category_id, :price, :duration_weeks, :level, :image);";
         $stmt = $this->conn->prepare($query);
 
         $this->title = htmlspecialchars(strip_tags($this->title));

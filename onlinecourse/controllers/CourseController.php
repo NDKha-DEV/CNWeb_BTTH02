@@ -35,16 +35,30 @@ class CourseController{
         return false;
     }
 
+    // Chức năng Read (Management)
+public function index() {
+    // 1. Kiểm tra quyền hạn
+    // $this->requirePermission();
+
+    // 2. Lấy ID của giảng viên đang đăng nhập
+    $currentUserId = AuthController::getCurrentUserId();
+
+    // 3. Gọi Model để lấy danh sách khóa học của giảng viên này
+    $courses = $this->course->readAllByInstructor($currentUserId);
+
+    // 4. Gọi View hiển thị (Lưu ý đường dẫn không có ../)
+    require_once 'views/instructor/course/manage.php';
+}
     // Chức năng Create
     public function create(){
-        $this->requirePermission();
+        // $this->requirePermission();
 
         $categories = $this->category->readAll();
         require_once 'views/instructor/course/create.php';
     }
 
     public function store() {
-        $this->requirePermission();
+        // $this->requirePermission();
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $this->bindCourseData($_POST);
@@ -73,7 +87,7 @@ class CourseController{
 
     // Chức năng chỉnh sửa
     public function edit($id) {
-        $this->requirePermission();
+        // $this->requirePermission();
 
         $this->course->id = $id;
         if($this->course->readOne()){
