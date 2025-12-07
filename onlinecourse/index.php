@@ -42,9 +42,13 @@ if (empty($request_uri)) {
 
 // Yêu cầu file AuthController cho Nhóm 1
 require_once 'controllers/AuthController.php';
+// require_once 'controllers/CourseController.php';
+require_once 'controllers/AdminController.php';
 
 // Khởi tạo Controller
 $authController = new AuthController();
+// $courseController = new CourseController();
+$adminController = new AdminController();
 
 // ------------------------------------
 // 4. CHUYỂN PHÁT YÊU CẦU (DISPATCH)
@@ -52,7 +56,7 @@ $authController = new AuthController();
 
 switch ($request_uri) {
     case '/':
-    case '/home':
+    case 'home':
         // Trang chủ
         echo "<h1>Chào mừng đến với Hệ thống Khóa học Online!</h1><p>Vui lòng <a href='" . BASE_URL . "login'>Đăng nhập</a> hoặc <a href='" . BASE_URL . "register'>Đăng ký</a>.</p>";
         break;
@@ -84,7 +88,38 @@ switch ($request_uri) {
     case 'logout':
         $authController->logout();
         break;
-    
+    // --- ADMIN DASHBOARD ---
+    case 'admin':
+    case 'admin/dashboard':
+        $adminController->dashboard();
+        break;
+
+    // --- ADMIN: QUẢN LÝ NGƯỜI DÙNG ---
+    case 'admin/users':
+        $adminController->manageUsers();
+        break;
+    case 'admin/users/toggle-status':
+        $adminController->toggleUserStatus();
+        break;
+
+    // --- ADMIN: QUẢN LÝ DANH MỤC ---
+    case 'admin/categories':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+             $adminController->createCategory(); // Xử lý tạo mới
+        } else {
+             $adminController->manageCategories(); // Hiển thị danh sách
+        }
+        break;
+
+    // --- ADMIN: DUYỆT KHÓA HỌC ---
+    case 'admin/courses/pending':
+        $adminController->pendingCourses();
+        break;
+    case 'admin/courses/approve':
+         // Tác vụ này cần thêm ID khóa học (ví dụ: /admin/courses/approve?id=123)
+         // Tạm thời xử lý qua POST hoặc GET đơn giản
+         $adminController->approveCourse(); 
+         break;
     // --- 404 NOT FOUND ---
     default:
         http_response_code(404);
