@@ -1,23 +1,12 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Danh sách khóa học</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #999;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #eee;
-        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #999; padding: 8px; text-align: left; }
+        th { background-color: #eee; }
     </style>
 </head>
 <body>
@@ -25,11 +14,27 @@
 <h2>Danh sách khóa học</h2>
 
 <!-- Form tìm kiếm -->
-<form method="get" action="">
+<form method="get" action="index.php">
+    <input type="hidden" name="action" value="search">
     <input type="text" name="keyword" placeholder="Tìm theo tiêu đề..." 
            value="<?= isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '' ?>">
-    <input type="number" name="category" placeholder="Lọc theo danh mục" 
-           value="<?= isset($_GET['category']) ? (int)$_GET['category'] : '' ?>">
+
+    <!-- Combobox category từ dữ liệu khóa học -->
+    <?php
+    $categories = [];
+    foreach($courses as $c){
+        $categories[$c['category_id']] = $c['category_name'];
+    }
+    ?>
+    <select name="category" onchange="this.form.submit()">
+        <option value="">-- Chọn danh mục --</option>
+        <?php foreach($categories as $id => $name): ?>
+            <option value="<?= $id ?>" <?= (isset($_GET['category']) && $_GET['category']==$id)?'selected':'' ?>>
+                <?= htmlspecialchars($name) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+
     <button type="submit">Tìm kiếm</button>
 </form>
 
@@ -54,7 +59,11 @@
         <?php if (!empty($courses)): ?>
             <?php foreach($courses as $course): ?>
                 <tr>
-                    <td><?= htmlspecialchars($course['title']) ?></td>
+                    <td>
+                        <a href="index.php?id=<?= $course['id'] ?>">
+                            <?= htmlspecialchars($course['title']) ?>
+                        </a>
+                    </td>
                     <td><?= htmlspecialchars($course['description']) ?></td>
                     <td><?= htmlspecialchars($course['instructor_name']) ?></td>
                     <td><?= htmlspecialchars($course['category_name']) ?></td>

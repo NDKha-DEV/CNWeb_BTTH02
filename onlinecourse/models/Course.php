@@ -84,4 +84,20 @@ class Course{
         return $stmt;
     }
 
+    //CHỨC NĂNG 2: TRUY VẤN CỤ THỂ TỪNG KHÓA HỌC
+
+    public function getById($id) {
+        $query = "SELECT c.*, u.fullname AS instructor_name, cat.name AS category_name
+                FROM " . $this->table_name . " c
+                LEFT JOIN users u ON u.id = c.instructor_id
+                LEFT JOIN categories cat ON cat.id = c.category_id
+                WHERE c.id = :id
+                LIMIT 1";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Trả về 1 mảng
+    }
+
 }
