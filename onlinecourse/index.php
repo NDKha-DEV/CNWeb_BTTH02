@@ -1,56 +1,96 @@
 <?php
-session_start();
-require_once 'models/Course.php';
-require_once 'models/Category.php';
-require_once 'config/Database.php';
+
+// onlinecourse/index.php
+// FRONT CONTROLLER
+
+// ------------------------------------
+// 1. THIẾT LẬP MÔI TRƯỜNG & BIẾN TOÀN CỤC
+// ------------------------------------
+
+// Khởi tạo Session
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+// session_destroy(); // Xóa session hiện tại
+// session_start();
+
+// Định nghĩa thư mục gốc của ứng dụng trên URL (quan trọng cho chuyển hướng)
+// Thay thế '/onlinecourse/' nếu thư mục ứng dụng của bạn khác.
+define('BASE_URL', '/onlinecourse/'); 
+
+
+// ------------------------------------
+// 2. XỬ LÝ ROUTING (ĐỊNH TUYẾN)
+// ------------------------------------
+
+// Lấy đường dẫn yêu cầu (URI) từ server
+$request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Loại bỏ thư mục gốc (BASE_URL) khỏi URI để có đường dẫn sạch
+$base_path = BASE_URL; 
+if (strpos($request_uri, $base_path) === 0) {
+    $request_uri = substr($request_uri, strlen($base_path));
+}
+
+// Đảm bảo đường dẫn trống là '/'
+if (empty($request_uri)) {
+    $request_uri = '/';
+}
+
+// ------------------------------------
+// 3. YÊU CẦU CONTROLLER
+// ------------------------------------
+
+// Yêu cầu file AuthController cho Nhóm 1
+require_once 'controllers/AuthController.php';
 require_once 'controllers/CourseController.php';
 require_once 'controllers/HomeController.php';
-// ... require các controller khác
+require_once 'config/Database.php';
+// Khởi tạo Controller
+$authController = new AuthController();
 
-// Giả lập đăng nhập
-if(!isset($_SESSION['user_id'])){
-    $_SESSION['user_id'] = 1;
-    $_SESSION['role'] = 1;
-    $_SESSION['fullname'] = "Nguyễn Minh Đức";
-    $_SESSION['email'] = "techer@gmail.com";
-}
-$controller = isset($_GET['controller']) ? $_GET['controller'] : 'home';
-$action     = isset($_GET['action']) ? $_GET['action'] : 'index';
-$id         = isset($_GET['id']) ? $_GET['id'] : null;
+// ------------------------------------
+// 4. CHUYỂN PHÁT YÊU CẦU (DISPATCH)
+// ------------------------------------
 
-switch ($controller) {
-    case 'home':
-        $home = new HomeController();
-        switch ($action) {
-            case 'index': 
-                $home->index();
-                break;
+switch ($request_uri) {
+    case '/':
+    case '/home':
+        // Trang chủ
+        echo "<h1>Chào mừng đến với Hệ thống Khóa học Online!</h1><p>Vui lòng <a href='" . BASE_URL . "login'>Đăng nhập</a> hoặc <a href='" . BASE_URL . "register'>Đăng ký</a>.</p>";
+        break;
+        
+    // --- ĐĂNG KÝ ---
+    case 'register':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $authController->processRegister();
+        } else {
+            $authController->register(); // Hiển thị form
         }
         break;
-    case 'course':
-        $courseController = new CourseController();
-        switch ($action) {
-            case 'index':
-                $courseController->index();
-                break; 
-            case 'create':
-                $courseController->create(); // Gọi hàm hiển thị form
-                break;
-            case 'store':
-                $courseController->store(); // Gọi hàm xử lý lưu
-                break;
-            case 'edit':
-                $courseController->edit($id);
-                break;
-            case 'update':
-                $courseController->update($id);
-                break;
-            default:
-                // Mặc định gọi danh sách
-                // $courseController->index(); 
-                break;
+        
+    // --- ĐĂNG NHẬP ---
+    case 'login':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $authController->processLogin();
+        } else {
+            $authController->login(); // Hiển thị form
         }
         break;
-    // ... các case khác
+
+    // --- TRANG CHÀO MỪNG ---
+    case 'welcome':
+        $authController->welcome(); 
+        break;
+        
+    // --- ĐĂNG XUẤT ---
+    case 'logout':
+        $authController->logout();
+        break;
+    
+    // --- 404 NOT FOUND ---
+    default:
+        http_response_code(404);
+        echo "<h1>404 - Không tìm thấy trang</h1><p>Đường dẫn yêu cầu: " . htmlspecialchars($request_uri) . "</p>";
+        break;
 }
-?>
