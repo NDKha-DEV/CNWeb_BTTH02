@@ -39,6 +39,12 @@ switch ($controller) {
             case 'store':
                 $courseController->store(); // Gọi hàm xử lý lưu
                 break;
+            case 'edit':
+                $courseController->edit($id);
+                break;
+            case 'update':
+                $courseController->update($id);
+                break;
             default:
                 // Mặc định gọi danh sách
                 // $courseController->index(); 

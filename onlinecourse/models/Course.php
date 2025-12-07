@@ -92,18 +92,18 @@ class Course{
 
     public function update() {
         $query = "Update " . $this->table_name . 
-                    "Set title = :title,
+                    " Set title = :title,
                         description = :description,
                         category_id = :category_id,
                         price = :price,
                         duration_weeks = :duration_weeks,
                         level = :level,
                         image = :image,
-                        update_at = NOW()
+                        updated_at = NOW()
                     Where id = :id";
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam('title', $this->title);
+        $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':description', $this->description);
         $stmt->bindParam(':category_id', $this->category_id);
         $stmt->bindParam(':price', $this->price);

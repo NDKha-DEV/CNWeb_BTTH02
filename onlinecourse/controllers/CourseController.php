@@ -25,12 +25,12 @@ class CourseController{
     }
 
     // Kiểm tra quyền sở hữu khóa học 
-    public function checkOwnership($courseIntructorId){
+    public function checkOwnership($courseInstructorId){
         $currentUserId = AuthController::getCurrentUserId();
         $currentUserRole = AuthController::getCurrentUserRole();
 
         if($currentUserRole == 2) return true;
-        if($currentUserId == 1 && $currentUserId == $courseIntructorId) return true;
+        if($currentUserRole == 1 && $currentUserId == $courseInstructorId) return true;
 
         return false;
     }
@@ -87,7 +87,7 @@ public function index() {
 
     // Chức năng chỉnh sửa
     public function edit($id) {
-        // $this->requirePermission();
+        $this->requirePermission();
 
         $this->course->id = $id;
         if($this->course->readOne()){
@@ -106,8 +106,15 @@ public function index() {
         $this->requirePermission();
 
         $this->course->id = $id;
+        if(!$this->course->readOne()) {
+            die("Không tìm thấy khóa học này trong CSDL.");
+        }
+
         if(!$this->checkOwnership($this->course->instructor_id)){
-            die("Hành động bị từ chối.");
+            // Debug: In ra để biết tại sao sai (Xóa sau khi sửa xong)
+            echo "User hiện tại: " . AuthController::getCurrentUserId();
+            echo " - Chủ khóa học: " . $this->course->instructor_id;
+            die(" Hành động bị từ chối. Bạn không phải là chủ khóa học này.");
         }
 
         $oldImageName = $this->course->image;
@@ -123,14 +130,16 @@ public function index() {
                 $uploadResult = $this->handleImageUpload($_FILES['image']);
 
                 if($uploadResult['success']){
+                    // Gán ảnh mới
                     $this->course->image = $uploadResult['fileName'];
 
-                    $this->deleteOldImage($uploadResult['fileName']);
+                    // SỬA: Xóa ảnh CŨ (biến $oldImageName đã được lấy ở đầu hàm)
+                    $this->deleteOldImage($oldImageName); 
                 }else{
                     die("Lỗi upload: " . implode(', ', $uploadResult['errors']));
                 }
-            }else
-            {
+            } else {
+                // Nếu không up ảnh mới thì giữ nguyên ảnh cũ
                 $this->course->image = $oldImageName;
             } 
 
@@ -155,41 +164,37 @@ public function index() {
     }
     // Các hàm hỗ trợ
     private function handleImageUpload($file) {
-        // Config
+       // 1. Cấu hình thư mục lưu trữ
         $target_dir = "assets/uploads/courses/";
-        $max_size = 2 *1024 * 1024;
-        $allowed_extentions = ['jpeg', 'jpg', 'png', 'webp'];
+        
+        // Tự động tạo thư mục nếu chưa có (Quan trọng để không bị lỗi upload)
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
 
         $result = ['success' => false, 'fileName' => '', 'errors' => []];
 
-        if(!isset($file) || $file['error'] !== 0){
-            $result['errors'][] = "Chưa chọn file hoặc lỗi server (Code: {$file['errors']})";
+        // 2. Kiểm tra lỗi cơ bản từ PHP
+        // Lưu ý: Key đúng là 'error' (số ít), code cũ của bạn là 'errors' (số nhiều) gây lỗi
+        if (!isset($file) || $file['error'] !== 0) {
+            $result['errors'][] = "Lỗi file upload (Mã lỗi: " . ($file['error'] ?? 'Unknown') . ")";
             return $result;
         }
 
-        $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        // 3. Sử dụng tên file gốc (Đơn giản hóa)
+        // basename() giúp loại bỏ các ký tự đường dẫn nguy hiểm, chỉ lấy tên file.extension
+        $simple_file_name = basename($file['name']);
+        $target_file = $target_dir . $simple_file_name;
 
-        //validate
-        if(!in_array($file_ext, $allowed_extentions)){
-            $result['errors'][] = "Chỉ hỗ trợ file: ". implode(', ', $allowed_extentions);
-        }
-        if($file['size'] > $max_size){
-            $result['errors'][] = "File quá lớn (>2MB).";
+        // 4. Di chuyển file vào thư mục
+        if (move_uploaded_file($file['tmp_name'], $target_file)) {
+            $result['success'] = true;
+            $result['fileName'] = $simple_file_name; // Trả về tên file gốc để lưu vào DB
+        } else {
+            $result['errors'][] = "Không thể lưu file. Hãy kiểm tra quyền ghi thư mục 'assets/uploads/courses/'";
         }
 
-        if(empty($result['errors'])){
-            // Đặt tên file ngẫu nnhieen
-            $new_file_name = time() . "__" . uniqid() . "." . $file_ext;
-
-            if(move_uploaded_file($file['tmp_name'], $target_dir. $new_file_name)){
-                $result['success'] = true;
-                $result['fileName'] = $new_file_name;
-            }
-            else{
-                $result['errors'][] = "Không thể di chuyển được file vào thư mục đích.";
-            }
-        }
-        return $result;
+        return $result; 
     }
 
     private function bindCourseData($data) {
