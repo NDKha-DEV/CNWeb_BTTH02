@@ -11,8 +11,7 @@ ob_start();
 
     <p>Bạn đã đăng nhập vào hệ thống Online Course.</p>
 
-    <p><a href="<?php echo BASE_URL; ?>logout">Thoát / Đăng xuất</a></p>
-    <p><a href="<?php echo BASE_URL; ?>courses">Vào khóa học</a></p>
+    <p><a href="/onlinecourse/logout">Thoát / Đăng xuất</a></p>
 </div>
 
 <?php 

@@ -99,7 +99,7 @@ class AuthController {
     public function welcome() {
         // 1. Kiểm tra quyền truy cập: Nếu chưa đăng nhập, chuyển hướng về trang login
         if (!isset($_SESSION['user_id'])) {
-            header('Location: ' . b . 'login');
+            header('Location: ' . BASE_URL . 'login');
             exit;
         }
         
