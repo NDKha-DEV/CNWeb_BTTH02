@@ -8,7 +8,7 @@ ob_start();
     <p style="color: red;"><?php echo $error; ?></p>
 <?php endif; ?>
 
-<form action="<?php echo BASE_URL; ?>auth/register" method="POST">
+<form action="/onlinecourse/register" method="POST">
     
     <label for="username">Tên người dùng (Username):</label>
     <input type="text" id="username" name="username" required><br>
@@ -25,7 +25,7 @@ ob_start();
     <button type="submit">Đăng ký</button>
 </form>
 
-<p>Đã có tài khoản? <a href="<?php echo BASE_URL; ?>auth/login">Đăng nhập ngay!</a></p>
+<p>Đã có tài khoản? <a href="/onlinecourse/login">Đăng nhập ngay!</a></p>
 
 <?php 
 $content = ob_get_clean();

@@ -45,11 +45,11 @@ class AuthController{
                 
                 // 3. Tạo Session (Quan trọng cho bảo mật và duy trì trạng thái)
                 $_SESSION['user_id'] = $user['id'];
-                $_SESSION['role'] = $user['role']; // 0: Student, 1: Instructor, 2: Admin
+                $_SESSION['user_role'] = (int)$user['role']; // 0: Student, 1: Instructor, 2: Admin
                 $_SESSION['username'] = $user['username'];
                 
                 // 4. Chuyển hướng thành công (đến trang chào mừng)
-                header('Location: ' . BASE_URL . 'home');
+                header('Location: ' . BASE_URL . 'welcome');
                 exit;
             } else {
                 
@@ -81,7 +81,7 @@ class AuthController{
             if ($this->userModel->create()) {
                 
                 // Đăng ký thành công, chuyển hướng đến trang đăng nhập
-                header('Location: ' . BASE_URL . 'auth/login');
+                header('Location: ' . BASE_URL . 'login?success=registered');
                 exit;
             } else {
                 
@@ -122,7 +122,7 @@ class AuthController{
     //Kiểm tra có phải giảng viên (1) hoặc Amin (2) không
     public static function isInstructorOrAdmin(){
         if(!self::isLoggedIn()) return false;
-        $role = $_SESSION['role'];
+        $role = $_SESSION['user_role'];
         return ($role == 1 || $role == 2);
     }
 
