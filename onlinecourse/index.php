@@ -42,19 +42,22 @@ if (empty($request_uri)) {
 
 // Yêu cầu file AuthController cho Nhóm 1
 require_once 'controllers/AuthController.php';
-
 // Khởi tạo Controller
 $authController = new AuthController();
 
+require_once 'controllers/CourseController.php';
+$course = new CourseController();
 // ------------------------------------
 // 4. CHUYỂN PHÁT YÊU CẦU (DISPATCH)
 // ------------------------------------
 
 switch ($request_uri) {
     case '/':
-    case '/home':
+    case 'home':
         // Trang chủ
-        echo "<h1>Chào mừng đến với Hệ thống Khóa học Online!</h1><p>Vui lòng <a href='" . BASE_URL . "login'>Đăng nhập</a> hoặc <a href='" . BASE_URL . "register'>Đăng ký</a>.</p>";
+        echo "<h1>Chào mừng đến với Hệ thống Khóa học Online!</h1>
+        <p>Vui lòng <a href='" . BASE_URL . "login'>Đăng nhập</a> 
+        hoặc <a href='" . BASE_URL . "register'>Đăng ký</a>.</p>";
         break;
         
     // --- ĐĂNG KÝ ---
@@ -85,6 +88,23 @@ switch ($request_uri) {
         $authController->logout();
         break;
     
+    // --- COURSES --- //
+    case 'courses':
+
+        if (isset($_GET['action']) && $_GET['action'] === 'search') {
+            // /onlinecourse/courses?action=search
+            $course->search();
+
+        } elseif (isset($_GET['id'])) {
+            // /onlinecourse/courses?id=10
+            $course->show($_GET['id']);
+
+        } else {
+            // /onlinecourse/courses
+            $course->index();
+        }
+        break;
+
     // --- 404 NOT FOUND ---
     default:
         http_response_code(404);
