@@ -105,9 +105,51 @@ switch ($request_uri) {
         }
         break;
 
+    
+    case 'course/manage':
+        $course->indexForInstructor();
+        break;
+
+    // 2. Tạo khóa học mới
+    case 'course/create':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Nếu submit form (POST) -> Lưu data
+            $course->store();
+        } else {
+            // Nếu truy cập bình thường (GET) -> Hiển thị form
+            $course->create();
+        }
+        break;
+
+    // 3. Sửa khóa học
+    case 'course/edit':
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
+        if ($id) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Submit form sửa -> Cập nhật
+                $course->update($id);
+            } else {
+                // Hiển thị form sửa
+                $course->edit($id);
+            }
+        } else {
+            echo "Lỗi: Không tìm thấy ID khóa học để sửa.";
+        }
+        break;
+
+    // 4. Xóa khóa học
+    case 'course/delete':
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
+        if ($id) {
+            $course->delete($id);
+        } else {
+            echo "Lỗi: Không tìm thấy ID khóa học để xóa.";
+        }
+        break;
     // --- 404 NOT FOUND ---
     default:
         http_response_code(404);
         echo "<h1>404 - Không tìm thấy trang</h1><p>Đường dẫn yêu cầu: " . htmlspecialchars($request_uri) . "</p>";
         break;
 }
+
