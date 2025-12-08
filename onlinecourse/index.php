@@ -53,7 +53,7 @@ switch ($controllerName) {
             case 'edit': $course->edit($id); break;
             case 'update': $course->update($id); break;
             case 'delete': $course->delete($id); break;
-            // case 'detail': $course->detail($id); break;
+            case 'detail': $course->detail($id); break;
             default: $course->index(); break;
         }
         break;
