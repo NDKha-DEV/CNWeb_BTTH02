@@ -9,7 +9,7 @@ RewriteEngine On
 
 # Thiết lập thư mục cơ sở là /onlinecourse/
 # Thay thế nếu thư mục ứng dụng của bạn khác (ví dụ: nếu bạn đặt code trong htdocs/, thì là RewriteBase /)
-RewriteBase /Project/CNWeb_BTTH02/onlinecourse/
+RewriteBase /onlinecourse/
 
 # 1. Bỏ qua nếu đường dẫn là một file thực sự tồn tại (ví dụ: style.css, script.js)
 RewriteCond %{REQUEST_FILENAME} !-f
