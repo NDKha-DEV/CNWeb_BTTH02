@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Chỉnh sửa khóa học</title>
     <style>
-        /* CSS cơ bản để giao diện gọn gàng hơn */
+        /* CSS cơ bản */
         body { font-family: sans-serif; padding: 20px; color: #333; }
         .container { max-width: 800px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 5px; }
         .form-group { margin-bottom: 15px; }
@@ -13,10 +13,9 @@
             width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;
         }
         .btn { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; color: white; text-decoration: none; display: inline-block;}
-        .btn-submit { background-color: #ffc107; color: black; } /* Màu vàng cho nút sửa */
+        .btn-submit { background-color: #ffc107; color: black; } 
         .btn-back { background-color: #6c757d; margin-right: 10px; }
         
-        /* Style hiển thị ảnh cũ */
         .current-image-box { margin: 10px 0; padding: 10px; border: 1px dashed #ccc; background: #f9f9f9; display: inline-block;}
         .current-image-box img { max-width: 200px; height: auto; display: block; margin-bottom: 5px; }
         .note { font-size: 0.9em; color: #666; font-style: italic; }
@@ -27,11 +26,11 @@
 <div class="container">
     <h2>✏️ Chỉnh sửa khóa học</h2>
     
-    <form action="<?php echo BASE_URL; ?>course/update/<?php echo $this->course->id; ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo BASE_URL; ?>course/edit?id=<?php echo $this->courseModel->id; ?>" method="POST" enctype="multipart/form-data">
 
         <div class="form-group">
             <label>Tiêu đề khóa học (*):</label>
-            <input type="text" name="title" value="<?php echo htmlspecialchars($this->course->title); ?>" required>
+            <input type="text" name="title" value="<?php echo htmlspecialchars($this->courseModel->title); ?>" required>
         </div>
 
         <div class="form-group">
@@ -41,8 +40,7 @@
                 <?php 
                 if(isset($categories)){
                     while ($cat = $categories->fetch(PDO::FETCH_ASSOC)) {
-                        // Logic so sánh: Nếu ID danh mục trong vòng lặp bằng ID danh mục của khóa học -> thêm chữ 'selected'
-                        $selected = ($cat['id'] == $this->course->category_id) ? 'selected' : '';
+                        $selected = ($cat['id'] == $this->courseModel->category_id) ? 'selected' : '';
                         echo "<option value='{$cat['id']}' $selected>{$cat['name']}</option>";
                     }
                 }
@@ -53,26 +51,26 @@
         <div class="form-group">
             <label>Trình độ:</label>
             <select name="level">
-                <option value="Beginner" <?php echo ($this->course->level == 'Beginner') ? 'selected' : ''; ?>>Cơ bản (Beginner)</option>
-                <option value="Intermediate" <?php echo ($this->course->level == 'Intermediate') ? 'selected' : ''; ?>>Trung bình (Intermediate)</option>
-                <option value="Advanced" <?php echo ($this->course->level == 'Advanced') ? 'selected' : ''; ?>>Nâng cao (Advanced)</option>
+                <option value="Beginner" <?php echo ($this->courseModel->level == 'Beginner') ? 'selected' : ''; ?>>Cơ bản (Beginner)</option>
+                <option value="Intermediate" <?php echo ($this->courseModel->level == 'Intermediate') ? 'selected' : ''; ?>>Trung bình (Intermediate)</option>
+                <option value="Advanced" <?php echo ($this->courseModel->level == 'Advanced') ? 'selected' : ''; ?>>Nâng cao (Advanced)</option>
             </select>
         </div>
 
         <div style="display: flex; gap: 20px;">
             <div class="form-group" style="flex: 1;">
                 <label>Giá ($):</label>
-                <input type="number" name="price" value="<?php echo $this->course->price; ?>" min="0" step="0.01">
+                <input type="number" name="price" value="<?php echo $this->courseModel->price; ?>" min="0" step="0.01">
             </div>
             <div class="form-group" style="flex: 1;">
                 <label>Thời lượng (tuần):</label>
-                <input type="number" name="duration_weeks" value="<?php echo $this->course->duration_weeks; ?>" min="1">
+                <input type="number" name="duration_weeks" value="<?php echo $this->courseModel->duration_weeks; ?>" min="1">
             </div>
         </div>
 
         <div class="form-group">
             <label>Mô tả chi tiết:</label>
-            <textarea name="description" rows="6"><?php echo htmlspecialchars($this->course->description); ?></textarea>
+            <textarea name="description" rows="6"><?php echo htmlspecialchars($this->courseModel->description); ?></textarea>
         </div>
 
         <div class="form-group">
@@ -81,16 +79,9 @@
             <div class="current-image-box">
                 <div>Ảnh hiện tại:</div>
                 <?php 
-                    // Xây dựng đường dẫn ảnh
-                    $imgName = !empty($this->course->image) ? $this->course->image : 'default.jpg';
-                    $sysPath = "assets/uploads/courses/" . $imgName;
+                    $imgName = !empty($this->courseModel->image) ? $this->courseModel->image : 'default.jpg';
                     $webPath = BASE_URL . "assets/uploads/courses/" . $imgName;
-
-                    if (file_exists($sysPath)) {
-                        echo "<img src='$webPath' alt='Course Image'>";
-                    } else {
-                        echo "<span style='color:red'>Ảnh không tồn tại ($imgName)</span>";
-                    }
+                    echo "<img src='$webPath' alt='Course Image'>";
                 ?>
             </div>
 
@@ -102,7 +93,7 @@
         <hr>
         
         <button type="submit" class="btn btn-submit">Lưu cập nhật</button>
-        <a href="<?php echo BASE_URL; ?>course/index" class="btn btn-back">Hủy bỏ</a>
+        <a href="<?php echo BASE_URL; ?>course/manage" class="btn btn-back">Hủy bỏ</a>
 
     </form>
 </div>

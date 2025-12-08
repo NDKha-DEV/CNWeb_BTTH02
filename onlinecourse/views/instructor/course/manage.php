@@ -46,7 +46,6 @@
         </thead>
         <tbody>
             <?php 
-            // Kiểm tra biến $courses được truyền từ Controller->index()
             if(isset($courses) && $courses->rowCount() > 0): 
                 while ($row = $courses->fetch(PDO::FETCH_ASSOC)): 
             ?>
@@ -55,15 +54,16 @@
 
                     <td>
                         <?php 
-                            // Nếu có tên ảnh thì nối đường dẫn, nếu không thì dùng ảnh mặc định
                             $imgName = !empty($row['image']) ? $row['image'] : 'default.jpg';
-                            $sysPath = "assets/uploads/courses/" . $imgName;
+                            // Đường dẫn hiển thị trên web
                             $webPath = BASE_URL . "assets/uploads/courses/" . $imgName;
-                            // Kiểm tra file có thật trên ổ cứng không
+                            // Đường dẫn kiểm tra file hệ thống
+                            $sysPath = "assets/uploads/courses/" . $imgName;
+                            
                             if (file_exists($sysPath)) {
                                 echo '<img src="'.$webPath.'" class="thumb-img">';
                             } else {
-                                echo '<span style="color:red; font-size:12px">Ảnh lỗi</span>';
+                                echo '<img src="'.BASE_URL.'assets/uploads/courses/default.jpg" class="thumb-img" alt="Default">';
                             }
                         ?>
                     </td>
@@ -84,11 +84,11 @@
                     </td>
 
                     <td>
-                        <a href="<?php echo BASE_URL; ?>course/edit/<?php echo $row['id']; ?>" class="btn btn-edit">
+                        <a href="<?php echo BASE_URL; ?>course/edit?id=<?php echo $row['id']; ?>" class="btn btn-edit">
                             ✏️ Sửa
                         </a>
 
-                        <a href="<?php echo BASE_URL; ?>course/delete/<?php echo $row['id']; ?>" 
+                        <a href="<?php echo BASE_URL; ?>course/delete?id=<?php echo $row['id']; ?>" 
                            class="btn btn-delete"
                            onclick="return confirm('⚠️ CẢNH BÁO:\nBạn có chắc chắn muốn xóa khóa học này?\nHành động này không thể hoàn tác!');">
                            🗑️ Xóa
@@ -100,7 +100,7 @@
                 <tr>
                     <td colspan="5" style="text-align: center; padding: 20px;">
                         Bạn chưa tạo khóa học nào. <br><br>
-                        <a href="course/create" style="color: blue;">Bấm vào đây để tạo khóa học đầu tiên</a>
+                        <a href="<?php echo BASE_URL; ?>course/create" style="color: blue;">Bấm vào đây để tạo khóa học đầu tiên</a>
                     </td>
                 </tr>
             <?php endif; ?>

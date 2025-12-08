@@ -3,18 +3,57 @@ require_once 'AuthController.php';
 require_once 'models/Course.php';
 require_once 'models/Category.php';
 require_once 'config/Database.php';
+require_once __DIR__ . "/../config/database.php";
+require_once __DIR__ . "/../models/Course.php";
 
-class CourseController{
+class CourseController {
     private $db;
-    public $course;
-    public $category;
-
-    public function __construct(){
+    private $courseModel;
+    private $category;
+    public function __construct() {
         $database = new Database();
         $this->db = $database->getConnection();
-        $this->course = new Course($this->db);
+        $this->courseModel = new Course($this->db);
         $this->category = new Category($this->db);
     }
+
+    // 1. index(): lấy tất cả khóa học
+    public function index() {
+        $courses = $this->courseModel->getAll()->fetchAll(PDO::FETCH_ASSOC);
+        include __DIR__ . "/../views/courses/index.php";
+    }
+
+    // 2. show($id): xem chi tiết khóa học
+    public function show($id) {
+        $course = $this->courseModel->getById($id);
+        if (!$course) {
+            echo "Khóa học không tồn tại!";
+            exit;
+        }
+        include __DIR__ . "/../views/courses/detail.php";
+    }
+
+    // 3. search(): xử lý tìm kiếm + lọc category
+    public function search() {
+        $keyword = !empty($_GET['keyword']) ? $_GET['keyword'] : null;
+        $category_id = !empty($_GET['category']) ? $_GET['category'] : null;
+
+        if ($keyword !== null && $category_id !== null) {
+            $result = $this->courseModel->combinedSearchFilter($keyword, $category_id);
+        } elseif ($keyword !== null) {
+            $result = $this->courseModel->searchByKeyword($keyword);
+        } elseif ($category_id !== null) {
+            $result = $this->courseModel->filterByCategory($category_id);
+        } else {
+            $result = $this->courseModel->getAll();
+        }
+
+        $courses = $result->fetchAll(PDO::FETCH_ASSOC);
+        include __DIR__ . "/../views/courses/search.php";
+    }
+
+
+    
 
     // Chặn truy cập nếu không có quyền truy cập
     private function requirePermission(){
@@ -36,19 +75,19 @@ class CourseController{
     }
 
     // Chức năng Read (Management)
-public function index() {
-    // 1. Kiểm tra quyền hạn
-    $this->requirePermission();
+    public function indexForInstructor() {
+        // 1. Kiểm tra quyền hạn
+        $this->requirePermission();
 
-    // 2. Lấy ID của giảng viên đang đăng nhập
-    $currentUserId = AuthController::getCurrentUserId();
+        // 2. Lấy ID của giảng viên đang đăng nhập
+        $currentUserId = AuthController::getCurrentUserId();
 
-    // 3. Gọi Model để lấy danh sách khóa học của giảng viên này
-    $courses = $this->course->readAllByInstructor($currentUserId);
+        // 3. Gọi Model để lấy danh sách khóa học của giảng viên này
+        $courses = $this->courseModel->readAllByInstructor($currentUserId);
 
-    // 4. Gọi View hiển thị (Lưu ý đường dẫn không có ../)
-    require_once 'views/instructor/course/manage.php';
-}
+        // 4. Gọi View hiển thị (Lưu ý đường dẫn không có ../)
+        require_once 'views/instructor/course/manage.php';
+    }
     // Chức năng Create
     public function create(){
         $this->requirePermission();
@@ -64,20 +103,20 @@ public function index() {
             $this->bindCourseData($_POST);
 
             //Lấy instructor_id từ session hiện tại 
-            $this->course->instructor_id = AuthController::getCurrentUserId();
+            $this->courseModel->instructor_id = AuthController::getCurrentUserId();
 
             // Xử lý upload ảnh
             $uploadResult = $this->handleImageUpload($_FILES['image']);
                 
             if($uploadResult['success'] ){
-                $this->course->image = $uploadResult['fileName'];
+                $this->courseModel->image = $uploadResult['fileName'];
             }else{
-                $this->course->image = 'default.jpg';
+                $this->courseModel->image = 'default.jpg';
             }
 
             // Lửu vào DB
-            if($this->course->create()){
-                header("Location: " . BASE_URL . "course/index"); 
+            if($this->courseModel->create()){
+                header("Location: " . BASE_URL . "course/manage");
             }else{
                 echo "Lỗi tạo khóa học trong cở sở dữ liệu.";
             }
@@ -89,9 +128,9 @@ public function index() {
     public function edit($id) {
         $this->requirePermission();
 
-        $this->course->id = $id;
-        if($this->course->readOne()){
-            if(!$this->checkOwnership($this->course->instructor_id)){
+        $this->courseModel->id = $id;
+        if($this->courseModel->readOne()){
+            if(!$this->checkOwnership($this->courseModel->instructor_id)){
                 die("Bạn không có quyền chỉnh sửa khóa học của người khác");
             }
 
@@ -105,25 +144,25 @@ public function index() {
     public function update($id) {
         $this->requirePermission();
 
-        $this->course->id = $id;
-        if(!$this->course->readOne()) {
+        $this->courseModel->id = $id;
+        if(!$this->courseModel->readOne()) {
             die("Không tìm thấy khóa học này trong CSDL.");
         }
 
-        if(!$this->checkOwnership($this->course->instructor_id)){
+        if(!$this->checkOwnership($this->courseModel->instructor_id)){
             // Debug: In ra để biết tại sao sai (Xóa sau khi sửa xong)
             echo "User hiện tại: " . AuthController::getCurrentUserId();
-            echo " - Chủ khóa học: " . $this->course->instructor_id;
+            echo " - Chủ khóa học: " . $this->courseModel->instructor_id;
             die(" Hành động bị từ chối. Bạn không phải là chủ khóa học này.");
         }
 
-        $oldImageName = $this->course->image;
+        $oldImageName = $this->courseModel->image;
 
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
             $this->bindCourseData($_POST);
 
-            $this->course->id = $id;
+            $this->courseModel->id = $id;
 
             if(!empty($_FILES['image']['name']))
             {   
@@ -131,7 +170,7 @@ public function index() {
 
                 if($uploadResult['success']){
                     // Gán ảnh mới
-                    $this->course->image = $uploadResult['fileName'];
+                    $this->courseModel->image = $uploadResult['fileName'];
 
                     // SỬA: Xóa ảnh CŨ (biến $oldImageName đã được lấy ở đầu hàm)
                     $this->deleteOldImage($oldImageName); 
@@ -140,12 +179,12 @@ public function index() {
                 }
             } else {
                 // Nếu không up ảnh mới thì giữ nguyên ảnh cũ
-                $this->course->image = $oldImageName;
+                $this->courseModel->image = $oldImageName;
             } 
 
-            if($this->course->update())
+            if($this->courseModel->update())
             {
-                header("Location: " . BASE_URL . "course/index");
+                header("Location: " . BASE_URL . "course/manage");
                 exit();
             }else{
                 echo "Lỗi khi không cập nhật cơ sở dữ liệu.";
@@ -156,9 +195,9 @@ public function index() {
     // Chức năng Xóa
     public function delete($id) {
         $this->requirePermission();
-        $this->course->id = $id;
-        if($this->course->delete()){
-            header("Location: " . BASE_URL . "course/index");
+        $this->courseModel->id = $id;
+        if($this->courseModel->delete()){
+            header("Location: " . BASE_URL . "course/manage");
         }else{
             echo "Lỗi khi không xóa ở cơ sở dữ liệu";
         }
@@ -199,12 +238,12 @@ public function index() {
     }
 
     private function bindCourseData($data) {
-        $this->course->title          = $data['title'] ?? '';
-        $this->course->description    = $data['description'] ?? '';
-        $this->course->price          = $data['price'] ?? 0;
-        $this->course->category_id    = $data['category_id'] ?? null;
-        $this->course->duration_weeks = $data['duration_weeks'] ?? 0;
-        $this->course->level          = $data['level'] ?? 'Beginner';
+        $this->courseModel->title          = $data['title'] ?? '';
+        $this->courseModel->description    = $data['description'] ?? '';
+        $this->courseModel->price          = $data['price'] ?? 0;
+        $this->courseModel->category_id    = $data['category_id'] ?? null;
+        $this->courseModel->duration_weeks = $data['duration_weeks'] ?? 0;
+        $this->courseModel->level          = $data['level'] ?? 'Beginner';
     }
 
     private function deleteOldImage($fileName) {
