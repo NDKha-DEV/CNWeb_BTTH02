@@ -1,0 +1,22 @@
+# onlinecourse/.htaccess
+
+# Bật Engine ghi đè (Rewrite Engine)
+RewriteEngine On
+
+# ----------------------------------------------------
+# QUY TẮC CHUYỂN HƯỚNG
+# ----------------------------------------------------
+
+# Thiết lập thư mục cơ sở là /onlinecourse/
+# Thay thế nếu thư mục ứng dụng của bạn khác (ví dụ: nếu bạn đặt code trong htdocs/, thì là RewriteBase /)
+RewriteBase /CNWeb_BTTH02/onlinecourse/
+
+# 1. Bỏ qua nếu đường dẫn là một file thực sự tồn tại (ví dụ: style.css, script.js)
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# 2. Bỏ qua nếu đường dẫn là một thư mục thực sự tồn tại (ví dụ: assets/, uploads/)
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# 3. Chuyển hướng mọi yêu cầu còn lại (ví dụ: /login, /register)
+# về file index.php. Cờ [L] (Last) kết thúc việc xử lý các quy tắc.
+RewriteRule ^(.*)$ index.php [L]
