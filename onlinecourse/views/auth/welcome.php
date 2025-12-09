@@ -10,9 +10,9 @@ ob_start();
     <h2>Chào mừng trở lại, <?php echo htmlspecialchars($username); ?></h2>
 
     <p>Bạn đã đăng nhập vào hệ thống Online Course.</p>
-
-    <p><a href="<?php echo BASE_URL; ?>logout">Thoát / Đăng xuất</a></p>
     <p><a href="<?php echo BASE_URL; ?>courses">Xem khóa học</a></p>
+    <p><a href="<?php echo BASE_URL; ?>enrollment">Xem khóa học đã đăng ký</a></p>
+    <p><a href="<?php echo BASE_URL; ?>logout">Thoát / Đăng xuất</a></p>
 </div>
 
 <?php 

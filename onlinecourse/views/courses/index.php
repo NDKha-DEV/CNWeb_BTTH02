@@ -87,6 +87,6 @@
         <?php endif; ?>
     </tbody>
 </table>
-<p><a href="<?php echo BASE_URL; ?>logout">Thoát / Đăng xuất</a></p>
+<p><a href="<?php echo BASE_URL; ?>welcome">Trở về trang chủ</a></p>
 </body>
 </html>

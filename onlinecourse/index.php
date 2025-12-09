@@ -47,6 +47,13 @@ $authController = new AuthController();
 
 require_once 'controllers/CourseController.php';
 $course = new CourseController();
+
+require_once 'controllers/EnrollmentController.php';
+$enroll = new EnrollmentController();
+
+require_once 'controllers/LessonControler.php';
+$lesson = new LessonController();
+
 // ------------------------------------
 // 4. CHUYỂN PHÁT YÊU CẦU (DISPATCH)
 // ------------------------------------
@@ -103,6 +110,20 @@ switch ($request_uri) {
             // /onlinecourse/courses
             $course->index();
         }
+        break;
+
+    case 'enrollment':
+        $enroll->myCourses();
+        break;
+
+    case 'enrollment/register':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $enroll->register();
+        }
+        break;
+
+    case 'lesson':
+        $lesson->show();
         break;
 
     // --- 404 NOT FOUND ---
