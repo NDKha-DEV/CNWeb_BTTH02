@@ -84,6 +84,7 @@
                     </td>
 
                     <td>
+                        <a href="<?php echo BASE_URL; ?>lesson?course_id=<?php echo $row['id'];?>" class="btn btn-detail">Lesson Detail</a>
                         <a href="<?php echo BASE_URL; ?>course/edit?id=<?php echo $row['id']; ?>" class="btn btn-edit">
                             ✏️ Sửa
                         </a>
@@ -108,7 +109,7 @@
     </table>
 
     <br>
-    <a href="<?php echo BASE_URL; ?>home" style="text-decoration: none; color: #555;">← Quay về trang chủ</a>
+    <a href="<?php echo BASE_URL; ?>instructor/dashboard" style="text-decoration: none; color: #555;">← Quay về trang chủ</a>
 
 </body>
 </html>

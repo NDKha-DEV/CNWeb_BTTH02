@@ -133,7 +133,7 @@ class AuthController{
 
     //Lấy Role người dung hiện tại
     public static function getCurrentUserRole(){
-        return $_SESSION['role'] ?? null;
+        return $_SESSION['user_role'] ?? null;
     }
 }
 ?>
