@@ -42,8 +42,13 @@ if (empty($request_uri)) {
 
 // Yêu cầu file AuthController cho Nhóm 1
 require_once 'controllers/AuthController.php';
+// require_once 'controllers/CourseController.php';
+require_once 'controllers/AdminController.php';
+
 // Khởi tạo Controller
 $authController = new AuthController();
+// $courseController = new CourseController();
+$adminController = new AdminController();
 
 require_once 'controllers/CourseController.php';
 $course = new CourseController();
@@ -90,6 +95,38 @@ switch ($request_uri) {
     case 'logout':
         $authController->logout();
         break;
+    // --- ADMIN DASHBOARD ---
+    case 'admin':
+    case 'admin/dashboard':
+        $adminController->dashboard();
+        break;
+
+    // --- ADMIN: QUẢN LÝ NGƯỜI DÙNG ---
+    case 'admin/users':
+        $adminController->manageUsers();
+        break;
+    case 'admin/users/toggle-status':
+        $adminController->toggleUserStatus();
+        break;
+
+    // --- ADMIN: QUẢN LÝ DANH MỤC ---
+    case 'admin/categories':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+             $adminController->createCategory(); // Xử lý tạo mới
+        } else {
+             $adminController->manageCategories(); // Hiển thị danh sách
+        }
+        break;
+
+    // --- ADMIN: DUYỆT KHÓA HỌC ---
+    case 'admin/courses/pending':
+        $adminController->pendingCourses();
+        break;
+    case 'admin/courses/approve':
+         // Tác vụ này cần thêm ID khóa học (ví dụ: /admin/courses/approve?id=123)
+         // Tạm thời xử lý qua POST hoặc GET đơn giản
+         $adminController->approveCourse(); 
+         break;
     
     // --- COURSES --- //
     case 'courses':

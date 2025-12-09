@@ -40,7 +40,12 @@ class AuthController{
 
             // 2. Xác minh người dùng và mật khẩu
             if ($user && password_verify($_POST['password'], $user['password'])) {
-                
+                // Kiểm tra trạng thái tài khoản
+                if ((int)$user['status'] === 0) {
+                    $error = "Tài khoản của bạn đã bị vô hiệu hóa. Vui lòng liên hệ quản trị viên.";
+                    require 'views/auth/login.php';
+                    return; // Ngừng xử lý và không tạo session
+                }
                 // Đăng nhập thành công:
                 
                 // 3. Tạo Session (Quan trọng cho bảo mật và duy trì trạng thái)
@@ -49,7 +54,14 @@ class AuthController{
                 $_SESSION['username'] = $user['username'];
                 
                 // 4. Chuyển hướng thành công (đến trang chào mừng)
-                header('Location: ' . BASE_URL . 'welcome');
+                //header('Location: ' . BASE_URL . 'welcome');
+                if ((int)$user['role'] === 2) {
+                    // Nếu là Admin, chuyển hướng đến Dashboard Admin
+                    header('Location: ' . BASE_URL . 'admin/dashboard');
+                } else {
+                    // Nếu là Học viên hoặc Giảng viên, chuyển hướng đến trang chào mừng
+                    header('Location: ' . BASE_URL . 'welcome');
+                }
                 exit;
             } else {
                 
