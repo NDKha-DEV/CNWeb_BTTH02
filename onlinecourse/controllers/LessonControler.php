@@ -38,11 +38,10 @@ class LessonController {
         if(!$course_id || !$this->checkCourseOwner($course_id)) {
             die("Bạn không có quyền truy cập khóa học này.");
         }
-
-        $lessons = $this->lessonModel->readAllByCourse($course_id);
+        $lessons = $this->lessonModel->getByCourseId($course_id);
         $courseTitle = $this->courseModel->title; // Lấy tên khóa học để hiển thị
         
-        require_once 'views/instructor/lesson/manage.php';
+        require_once 'views/instructor/lessons/manage.php';
     }
 
     // 2. Form tạo bài học
@@ -63,7 +62,7 @@ class LessonController {
 
             if(!$this->checkCourseOwner($course_id)) die("Không có quyền.");
 
-            $this->lessonModel->setCourseId($course_id) = $course_id;
+            $this->lessonModel->setCourseId($course_id);
             $this->lessonModel->setTitle($_POST['title']);
             $this->lessonModel->setContent($_POST['content']);
             $this->lessonModel->setVideoUrl($_POST['video_url']);
@@ -80,7 +79,7 @@ class LessonController {
     // 4. Form sửa bài học
     public function edit() {
         $id = isset($_GET['id']) ? $_GET['id'] : null;
-        $this->lessonModel->setCourseId($id) = $id;
+        $this->lessonModel->setCourseId($id);
 
         if($this->lessonModel->readOne()) {
             // Kiểm tra quyền với khóa học chứa bài học này

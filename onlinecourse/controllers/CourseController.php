@@ -52,7 +52,7 @@ class CourseController {
         include __DIR__ . "/../views/courses/search.php";
     }
 
-
+    
     
     // Nguyen Minh Duc
     // Dashboard Instructor

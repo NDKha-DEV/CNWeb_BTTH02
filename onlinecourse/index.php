@@ -15,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Định nghĩa thư mục gốc của ứng dụng trên URL (quan trọng cho chuyển hướng)
 // Thay thế '/onlinecourse/' nếu thư mục ứng dụng của bạn khác.
-define('BASE_URL', '/Project/CNWeb_BTTH02/onlinecourse/'); 
+define('BASE_URL', '/onlinecourse/'); 
 
 
 // ------------------------------------
@@ -47,6 +47,9 @@ $authController = new AuthController();
 
 require_once 'controllers/CourseController.php';
 $course = new CourseController();
+
+require_once 'controllers/LessonControler.php';
+$lessonController = new LessonController();
 // ------------------------------------
 // 4. CHUYỂN PHÁT YÊU CẦU (DISPATCH)
 // ------------------------------------
@@ -148,6 +151,13 @@ switch ($request_uri) {
             echo "Lỗi: Không tìm thấy ID khóa học để xóa.";
         }
         break;
+    
+    // --- QUẢN LÝ BÀI HỌC (LESSON) ---
+
+    case 'lesson':
+        $lessonController->index();
+        break;
+
     // --- 404 NOT FOUND ---
     default:
         http_response_code(404);

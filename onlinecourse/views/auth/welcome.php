@@ -15,7 +15,7 @@ ob_start();
             echo "<p><a href=\"". BASE_URL . "instructor/dashboard\">Giao dien giang vien</a></p>";
         }
         ?>
-    <p><a href="<?php echo BASE_URL; ?>logout">Thoát / Đăng xuất</a></p>
+    <p><a href="/onlinecourse/logout">Thoát / Đăng xuất</a></p>
 </div>
 
 <?php 

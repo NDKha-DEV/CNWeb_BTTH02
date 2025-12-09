@@ -75,7 +75,7 @@ class Lesson {
 
     // Lấy tất cả bài học thuộc về 1 khóa học
     public function getByCourseId($course_id) {
-        $query = "SELECT * FROM " . $this->table_name. " WHERE course_id = :course_id ORDER BY order_index ASC";
+        $query = "SELECT * FROM " . $this->table_name. " WHERE course_id = :course_id ORDER BY lesson_order ASC";
         $stmt = $this->con->prepare($query);
         $stmt->bindParam(':course_id', $course_id);
         $stmt->execute();
