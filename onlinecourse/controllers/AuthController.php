@@ -45,7 +45,7 @@ class AuthController{
                 
                 // 3. Tạo Session (Quan trọng cho bảo mật và duy trì trạng thái)
                 $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_role'] = (int)$user['role']; // 0: Student, 1: Instructor, 2: Admin
+                $_SESSION['user_role'] = $user['role']; // 0: Student, 1: Instructor, 2: Admin
                 $_SESSION['username'] = $user['username'];
                 
                 // 4. Chuyển hướng thành công (đến trang chào mừng)
@@ -133,7 +133,7 @@ class AuthController{
 
     //Lấy Role người dung hiện tại
     public static function getCurrentUserRole(){
-        return $_SESSION['role'] ?? null;
+        return $_SESSION['user_role'] ?? null;
     }
 }
 ?>

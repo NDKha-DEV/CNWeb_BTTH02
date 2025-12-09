@@ -54,7 +54,12 @@ class CourseController {
 
 
     
-
+    // Nguyen Minh Duc
+    // Dashboard Instructor
+    public function dashboardOfInstructor(){
+        $this->requirePermission();
+        require_once 'views/instructor/dashboard.php';
+    }
     // Chặn truy cập nếu không có quyền truy cập
     private function requirePermission(){
         if(!AuthController::isInstructorOrAdmin()){
@@ -75,7 +80,7 @@ class CourseController {
     }
 
     // Chức năng Read (Management)
-    public function indexForInstructor() {
+    public function manageCoursesInstructor() {
         // 1. Kiểm tra quyền hạn
         $this->requirePermission();
 

@@ -15,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Định nghĩa thư mục gốc của ứng dụng trên URL (quan trọng cho chuyển hướng)
 // Thay thế '/onlinecourse/' nếu thư mục ứng dụng của bạn khác.
-define('BASE_URL', '/onlinecourse/'); 
+define('BASE_URL', '/Project/CNWeb_BTTH02/onlinecourse/'); 
 
 
 // ------------------------------------
@@ -105,9 +105,11 @@ switch ($request_uri) {
         }
         break;
 
-    
+    case 'instructor/dashboard':
+        $course->dashboardOfInstructor();
+        break;
     case 'course/manage':
-        $course->indexForInstructor();
+        $course->manageCoursesInstructor();
         break;
 
     // 2. Tạo khóa học mới
