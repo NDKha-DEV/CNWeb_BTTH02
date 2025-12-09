@@ -14,7 +14,7 @@
 <h2>Danh sách khóa học</h2>
 
 <!-- Form tìm kiếm -->
-<form method="get" action="index.php">
+<form method="get" action="<?php echo BASE_URL; ?>courses">
     <input type="hidden" name="action" value="search">
     <input type="text" name="keyword" placeholder="Tìm theo tiêu đề..." 
            value="<?= isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '' ?>">
@@ -60,7 +60,7 @@
             <?php foreach($courses as $course): ?>
                 <tr>
                     <td>
-                        <a href="index.php?id=<?= $course['id'] ?>">
+                        <a href="<?php echo BASE_URL; ?>courses?id=<?= $course['id'] ?>">
                             <?= htmlspecialchars($course['title']) ?>
                         </a>
                     </td>

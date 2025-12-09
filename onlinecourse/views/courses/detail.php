@@ -19,6 +19,6 @@
         <img src="<?= htmlspecialchars($course['image']) ?>" alt="Hình khóa học" width="200">
     <?php endif; ?>
 
-    <p><a href="index.php">← Quay lại danh sách khóa học</a></p>
+    <p><a href="<?php echo BASE_URL; ?>courses">← Quay lại danh sách khóa học</a></p>
 </body>
 </html>
