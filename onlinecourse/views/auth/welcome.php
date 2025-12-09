@@ -10,7 +10,11 @@ ob_start();
     <h2>Chào mừng trở lại, <?php echo htmlspecialchars($username); ?></h2>
 
     <p>Bạn đã đăng nhập vào hệ thống Online Course.</p>
-
+    <?php 
+        if($_SESSION['user_role'] == 1){
+            echo "<p><a href=\"". BASE_URL . "instructor/dashboard\">Giao dien giang vien</a></p>";
+        }
+        ?>
     <p><a href="/onlinecourse/logout">Thoát / Đăng xuất</a></p>
 </div>
 

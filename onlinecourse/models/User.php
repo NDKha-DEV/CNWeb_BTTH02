@@ -6,6 +6,10 @@ class User {
     private $conn;
     private $table_name = "users";
 
+    public $username;
+    public $password;
+    public $fullname;    
+    public $role;
     public $email;
 
     public function __construct($db) {

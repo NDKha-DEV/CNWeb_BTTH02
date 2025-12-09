@@ -37,6 +37,6 @@ class Category {
         $stmt->execute();
         return $stmt;
     }
-
-    // ... (Thêm các phương thức update, delete)
 }
+
+?>
