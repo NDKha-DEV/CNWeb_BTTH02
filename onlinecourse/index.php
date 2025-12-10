@@ -170,7 +170,7 @@ switch ($request_uri) {
     case 'enrollment':
         $enroll->myCourses();
         break;
-    // --- Thực hiện đăng ký ---
+    // --- Thực hiện đăng ký khóa học---
     case 'enrollment/register':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $enroll->register();
