@@ -122,7 +122,7 @@ switch ($request_uri) {
         }
         break;
 
-    case 'lesson':
+    case 'lesson/student':
         $lesson->show();
         break;
 
