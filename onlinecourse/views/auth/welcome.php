@@ -8,10 +8,16 @@ ob_start();
 <div style="text-align: center; margin-top: 50px;">
     <h1>🎉 Đăng ký/Đăng nhập Thành công! 🎉</h1>
     <h2>Chào mừng trở lại, <?php echo htmlspecialchars($username); ?></h2>
-
-    <p>Bạn đã đăng nhập vào hệ thống Online Course.</p>
-    <p><a href="<?php echo BASE_URL; ?>courses">Xem khóa học</a></p>
-    <p><a href="<?php echo BASE_URL; ?>enrollment">Xem khóa học đã đăng ký</a></p>
+    <?php 
+        if($_SESSION['user_role'] == 1){
+            echo "<p><a href=\"". BASE_URL . "instructor/dashboard\">Giao dien giang vien</a></p>";
+        }
+        elseif($_SESSION['user_role'] == 0){
+            echo "<p>Bạn đã đăng nhập vào hệ thống Online Course.</p>";
+            echo "<p><a href=\"" . BASE_URL . "courses\">Xem khóa học</a></p>";
+            echo "<p><a href=\"" . BASE_URL . "enrollment\">Xem khóa học đã đăng ký</a></p>";
+        }
+        ?>
     <p><a href="<?php echo BASE_URL; ?>logout">Thoát / Đăng xuất</a></p>
 </div>
 
