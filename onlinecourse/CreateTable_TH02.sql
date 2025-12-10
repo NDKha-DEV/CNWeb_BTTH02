@@ -8,7 +8,8 @@ CREATE TABLE users (
     password VARCHAR(255),
     fullname VARCHAR(255),
     role INT DEFAULT 0,              -- 0: học viên
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	status TINYINT(1) NOT NULL DEFAULT 1
 );
 -- bảng categories
 CREATE TABLE categories (
