@@ -6,6 +6,10 @@ class User {
     private $conn;
     private $table_name = "users";
 
+    public $username;
+    public $password;
+    public $fullname;    
+    public $role;
     public $email;
 
     public function __construct($db) {
@@ -17,7 +21,7 @@ class User {
      * @return array|false Thông tin người dùng (id, username, password, role) hoặc false.
      */
     public function findByEmail() {
-        $query = "SELECT id, username, email, password, role 
+        $query = "SELECT id, username, email, password, role , status
                   FROM " . $this->table_name . " 
                   WHERE email = ? 
                   LIMIT 0,1";
@@ -70,6 +74,33 @@ class User {
             return false;
         }
 
+        return false;
+    }
+    /**
+     * Đọc tất cả người dùng
+     * @return PDOStatement Danh sách người dùng
+     */
+    public function readAll() {
+        $query = "SELECT id, username, email, role, status  , created_at FROM " . $this->table_name . " ORDER BY created_at DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    /**
+     * Cập nhật trạng thái người dùng (kích hoạt/vô hiệu hóa)
+     * Giả định status 1: Active, 0: Inactive
+     */
+    public function updateStatus($user_id, $new_status) {
+        $query = "UPDATE " . $this->table_name . " SET status = :status WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':status', $new_status, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return true;
+        }
         return false;
     }
 }

@@ -42,8 +42,13 @@ if (empty($request_uri)) {
 
 // Yêu cầu file AuthController cho Nhóm 1
 require_once 'controllers/AuthController.php';
+// require_once 'controllers/CourseController.php';
+require_once 'controllers/AdminController.php';
+
 // Khởi tạo Controller
 $authController = new AuthController();
+// $courseController = new CourseController();
+$adminController = new AdminController();
 
 require_once 'controllers/CourseController.php';
 $course = new CourseController();
@@ -94,6 +99,38 @@ switch ($request_uri) {
     case 'logout':
         $authController->logout();
         break;
+    // --- ADMIN DASHBOARD ---
+    case 'admin':
+    case 'admin/dashboard':
+        $adminController->dashboard();
+        break;
+
+    // --- ADMIN: QUẢN LÝ NGƯỜI DÙNG ---
+    case 'admin/users':
+        $adminController->manageUsers();
+        break;
+    case 'admin/users/toggle-status':
+        $adminController->toggleUserStatus();
+        break;
+
+    // --- ADMIN: QUẢN LÝ DANH MỤC ---
+    case 'admin/categories':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+             $adminController->createCategory(); // Xử lý tạo mới
+        } else {
+             $adminController->manageCategories(); // Hiển thị danh sách
+        }
+        break;
+
+    // --- ADMIN: DUYỆT KHÓA HỌC ---
+    case 'admin/courses/pending':
+        $adminController->pendingCourses();
+        break;
+    case 'admin/courses/approve':
+         // Tác vụ này cần thêm ID khóa học (ví dụ: /admin/courses/approve?id=123)
+         // Tạm thời xử lý qua POST hoặc GET đơn giản
+         $adminController->approveCourse(); 
+         break;
     
     // --- Hiển thị Courses cho học sinh --- //
     case 'courses':
@@ -177,9 +214,60 @@ switch ($request_uri) {
         }
         break;
 
+    case 'instructor/dashboard':
+        $course->dashboardOfInstructor();
+        break;
+    case 'course/manage':
+        $course->manageCoursesInstructor();
+        break;
+
+    // 2. Tạo khóa học mới
+    case 'course/create':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Nếu submit form (POST) -> Lưu data
+            $course->store();
+        } else {
+            // Nếu truy cập bình thường (GET) -> Hiển thị form
+            $course->create();
+        }
+        break;
+
+    // 3. Sửa khóa học
+    case 'course/edit':
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
+        if ($id) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Submit form sửa -> Cập nhật
+                $course->update($id);
+            } else {
+                // Hiển thị form sửa
+                $course->edit($id);
+            }
+        } else {
+            echo "Lỗi: Không tìm thấy ID khóa học để sửa.";
+        }
+        break;
+
+    // 4. Xóa khóa học
+    case 'course/delete':
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
+        if ($id) {
+            $course->delete($id);
+        } else {
+            echo "Lỗi: Không tìm thấy ID khóa học để xóa.";
+        }
+        break;
+    
+    // --- QUẢN LÝ BÀI HỌC (LESSON) ---
+
+    case 'lesson':
+        $lessonController->index();
+        break;
+
     // --- 404 NOT FOUND ---
     default:
         http_response_code(404);
         echo "<h1>404 - Không tìm thấy trang</h1><p>Đường dẫn yêu cầu: " . htmlspecialchars($request_uri) . "</p>";
         break;
 }
+

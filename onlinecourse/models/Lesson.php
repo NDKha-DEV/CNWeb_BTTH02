@@ -1,19 +1,14 @@
 <?php
-
 class Lesson {
-
     private $con;
-    private $table_name = "lessons";
-
-    // Các thuộc tính đúng như bảng
-    public $id;
-    public $course_id;
-    public $title;
-    public $content;
-    public $video_url;
-    public $lesson_order;
-    public $created_at;
-
+    private $table_name= "lessons";
+    private $id;
+    private $course_id;
+    private $title;
+    private $content;
+    private $video_url;
+    private $lesson_order;
+    private $create_at;
 
     // ======================================
     // 🔹 GETTER & SETTER

@@ -1,13 +1,10 @@
 <?php
 // onlinecourse/controllers/AuthController.php
 
-// Định nghĩa BASE_URL để chuyển hướng an toàn trên XAMPP
-// define('BASE_URL', '/onlinecourse/');
 
 require_once 'config/Database.php';
 require_once 'models/User.php';
-
-class AuthController {
+class AuthController{
     private $userModel;
 
     public function __construct() {
@@ -43,7 +40,12 @@ class AuthController {
 
             // 2. Xác minh người dùng và mật khẩu
             if ($user && password_verify($_POST['password'], $user['password'])) {
-                
+                // Kiểm tra trạng thái tài khoản
+                if ((int)$user['status'] === 0) {
+                    $error = "Tài khoản của bạn đã bị vô hiệu hóa. Vui lòng liên hệ quản trị viên.";
+                    require 'views/auth/login.php';
+                    return; // Ngừng xử lý và không tạo session
+                }
                 // Đăng nhập thành công:
                 
                 // 3. Tạo Session (Quan trọng cho bảo mật và duy trì trạng thái)
@@ -52,7 +54,14 @@ class AuthController {
                 $_SESSION['username'] = $user['username'];
                 
                 // 4. Chuyển hướng thành công (đến trang chào mừng)
-                header('Location: ' . BASE_URL . 'welcome');
+                //header('Location: ' . BASE_URL . 'welcome');
+                if ((int)$user['role'] === 2) {
+                    // Nếu là Admin, chuyển hướng đến Dashboard Admin
+                    header('Location: ' . BASE_URL . 'admin/dashboard');
+                } else {
+                    // Nếu là Học viên hoặc Giảng viên, chuyển hướng đến trang chào mừng
+                    header('Location: ' . BASE_URL . 'welcome');
+                }
                 exit;
             } else {
                 
@@ -117,4 +126,30 @@ class AuthController {
         exit;
     }
     // ... (Các phương thức khác như welcome() và logout() đã được hướng dẫn trước) ...
+    //Kiểm tra đã đăng nhập hay chưa;
+    public static function isLoggedIn(){
+        return isset($_SESSION['user_id']);
+    }
+
+    //Kiểm tra có phải giảng viên (1) hoặc Amin (2) không
+    public static function isInstructorOrAdmin(){
+        if(!self::isLoggedIn()) return false;
+        $role = $_SESSION['user_role'];
+        return ($role == 1 || $role == 2);
+    }
+
+    //Lấy ID người dung hiện tại 
+    public static function getCurrentUserId(){
+        return $_SESSION['user_id'] ?? null;
+    }
+
+    //Lấy Role người dung hiện tại
+    public static function getCurrentUserRole(){
+        return $_SESSION['user_role'] ?? null;
+    }
 }
+?>
+
+
+
+
