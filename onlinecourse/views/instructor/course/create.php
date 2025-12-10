@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Tạo khóa học mới</title>
-    <style>
-        /* Tận dụng CSS từ trang Edit để đồng bộ giao diện */
-        body { font-family: sans-serif; padding: 20px; color: #333; }
-        .container { max-width: 800px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 5px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; }
-        input[type="text"], input[type="number"], select, textarea, input[type="file"] {
-            width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;
-        }
-        .btn { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; color: white; text-decoration: none; display: inline-block;}
-        .btn-submit { background-color: #28a745; } /* Xanh lá */
-        .btn-back { background-color: #6c757d; margin-right: 10px; }
-    </style>
-</head>
-<body>
+
 
 <div class="container">
     <h2>+ Tạo khóa học mới</h2>
@@ -79,5 +60,3 @@
         <a href="<?php echo BASE_URL; ?>course/manage" class="btn btn-back">Hủy bỏ</a>
     </form>
 </div>
-</body>
-</html>

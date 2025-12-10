@@ -1,115 +1,118 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Quản lý khóa học</title>
-    <style>
-        /* CSS cơ bản cho bảng và nút bấm */
-        body { font-family: sans-serif; padding: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        
-        /* Style cho bảng */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle; }
-        th { background-color: #f4f4f4; }
-        tr:hover { background-color: #f9f9f9; }
+<?php 
+    include 'views/layouts/header.php';
+    include 'views/layouts/sidebar.php';
+?>
+<div>
+<div class="container py-4">
 
-        /* Style cho ảnh */
-        .thumb-img { width: 80px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc; }
-
-        /* Style cho nút bấm */
-        .btn { text-decoration: none; padding: 6px 12px; border-radius: 4px; color: white; font-size: 14px; margin-right: 5px; display: inline-block; }
-        .btn-add { background-color: #28a745; padding: 10px 20px; font-weight: bold; } /* Xanh lá */
-        .btn-edit { background-color: #ffc107; color: black; } /* Vàng */
-        .btn-delete { background-color: #dc3545; } /* Đỏ */
-        .btn-detail { background-color: #17a2b8; } /* Xanh dương */
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <h2>📂 Danh sách khóa học của tôi</h2>
-        <a href="<?php echo BASE_URL; ?>course/create" class="btn btn-add">+ Thêm khóa học mới</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h3 mb-0 text-primary">📂 Danh sách khóa học của tôi</h2>
+        <a href="<?php echo BASE_URL; ?>course/create" class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> + Thêm khóa học mới
+        </a>
     </div>
 
-    <hr>
-
-    <table>
-        <thead>
-            <tr>
-                <th width="5%">ID</th>
-                <th width="12%">Ảnh bìa</th>
-                <th width="35%">Tên khóa học</th>
-                <th width="15%">Giá / Trình độ</th>
-                <th width="20%">Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php 
-            if(isset($courses) && $courses->rowCount() > 0): 
-                while ($row = $courses->fetch(PDO::FETCH_ASSOC)): 
-            ?>
-                <tr>
-                    <td><?php echo $row['id']; ?></td>
-
-                    <td>
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="text-center" width="5%">ID</th>
+                            <th scope="col" width="12%">Ảnh bìa</th>
+                            <th scope="col" width="30%">Tên khóa học</th>
+                            <th scope="col" width="18%">Giá / Trình độ</th>
+                            <th scope="col" class="text-center" width="25%">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <?php 
-                            $imgName = !empty($row['image']) ? $row['image'] : 'default.jpg';
-                            // Đường dẫn hiển thị trên web
-                            $webPath = BASE_URL . "assets/uploads/courses/" . $imgName;
-                            // Đường dẫn kiểm tra file hệ thống
-                            $sysPath = "assets/uploads/courses/" . $imgName;
-                            
-                            if (file_exists($sysPath)) {
-                                echo '<img src="'.$webPath.'" class="thumb-img">';
-                            } else {
-                                echo '<img src="'.BASE_URL.'assets/uploads/courses/default.jpg" class="thumb-img" alt="Default">';
-                            }
+                        if(isset($courses) && $courses->rowCount() > 0): 
+                            while ($row = $courses->fetch(PDO::FETCH_ASSOC)): 
                         ?>
-                    </td>
+                            <tr>
+                                <td class="text-center text-muted"><?php echo $row['id']; ?></td>
 
-                    <td>
-                        <strong><?php echo htmlspecialchars($row['title']); ?></strong>
-                        <br>
-                        <small style="color: #666;">
-                            Thời lượng: <?php echo $row['duration_weeks']; ?> tuần
-                        </small>
-                    </td>
+                                <td>
+                                    <?php 
+                                        $imgName = !empty($row['image']) ? $row['image'] : 'default.jpg';
+                                        $webPath = BASE_URL . "assets/uploads/courses/" . $imgName;
+                                        $sysPath = "assets/uploads/courses/" . $imgName;
+                                        
+                                        // Sử dụng class img-thumbnail và rounded của Bootstrap
+                                        if (file_exists($sysPath)) {
+                                            echo '<img src="'.$webPath.'" class="img-thumbnail rounded" style="width: 100px; height: 60px; object-fit: cover;">';
+                                        } else {
+                                            echo '<img src="'.BASE_URL.'assets/uploads/courses/default.jpg" class="img-thumbnail rounded" style="width: 100px; height: 60px; object-fit: cover;" alt="Default">';
+                                        }
+                                    ?>
+                                </td>
 
-                    <td>
-                        <div style="font-weight: bold; color: #d9534f;">
-                            $<?php echo number_format($row['price']); ?>
-                        </div>
-                        <small><?php echo $row['level']; ?></small>
-                    </td>
+                                <td>
+                                    <div class="fw-bold text-dark"><?php echo htmlspecialchars($row['title']); ?></div>
+                                    <small class="text-muted">
+                                        <i class="bi bi-clock"></i> Thời lượng: <?php echo $row['duration_weeks']; ?> tuần
+                                    </small>
+                                </td>
 
-                    <td>
-                        <a href="<?php echo BASE_URL; ?>lesson?course_id=<?php echo $row['id'];?>" class="btn btn-detail">Lesson Detail</a>
-                        <a href="<?php echo BASE_URL; ?>course/edit?id=<?php echo $row['id']; ?>" class="btn btn-edit">
-                            ✏️ Sửa
-                        </a>
+                                <td>
+                                    <div class="fw-bold text-danger mb-1">
+                                        $<?php echo number_format($row['price']); ?>
+                                    </div>
+                                    <?php 
+                                        // Logic màu sắc badge dựa trên trình độ
+                                        $badgeClass = 'bg-secondary';
+                                        if($row['level'] == 'Beginner') $badgeClass = 'bg-success';
+                                        elseif($row['level'] == 'Intermediate') $badgeClass = 'bg-warning text-dark';
+                                        elseif($row['level'] == 'Advanced') $badgeClass = 'bg-danger';
+                                    ?>
+                                    <span class="badge <?php echo $badgeClass; ?> rounded-pill">
+                                        <?php echo $row['level']; ?>
+                                    </span>
+                                </td>
 
-                        <a href="<?php echo BASE_URL; ?>course/delete?id=<?php echo $row['id']; ?>" 
-                           class="btn btn-delete"
-                           onclick="return confirm('⚠️ CẢNH BÁO:\nBạn có chắc chắn muốn xóa khóa học này?\nHành động này không thể hoàn tác!');">
-                           🗑️ Xóa
-                        </a>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="5" style="text-align: center; padding: 20px;">
-                        Bạn chưa tạo khóa học nào. <br><br>
-                        <a href="<?php echo BASE_URL; ?>course/create" style="color: blue;">Bấm vào đây để tạo khóa học đầu tiên</a>
-                    </td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                                <td class="text-center">
+                                    <!-- <div class="btn-group" role="group"> -->
+                                        <a href="<?php echo BASE_URL; ?>lesson?course_id=<?php echo $row['id'];?>" class="btn btn-sm btn-info text-white" title="Quản lý bài học">
+                                            📚 Bài học
+                                        </a>
 
-    <br>
-    <a href="<?php echo BASE_URL; ?>instructor/dashboard" style="text-decoration: none; color: #555;">← Quay về trang chủ</a>
+                                        <a href="<?php echo BASE_URL; ?>course/edit?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning" title="Chỉnh sửa">
+                                            ✏️ Sửa
+                                        </a>
 
-</body>
-</html>
+                                        <a href="<?php echo BASE_URL; ?>course/delete?id=<?php echo $row['id']; ?>" 
+                                           class="btn btn-sm btn-danger"
+                                           onclick="return confirm('⚠️ CẢNH BÁO:\nBạn có chắc chắn muốn xóa khóa học này?\nHành động này không thể hoàn tác!');"
+                                           title="Xóa">
+                                           🗑️ Xóa
+                                        </a>
+                                    <!-- </div> -->
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="text-muted mb-3">Bạn chưa tạo khóa học nào.</div>
+                                    <a href="<?php echo BASE_URL; ?>course/create" class="btn btn-outline-primary">
+                                        + Tạo khóa học đầu tiên ngay
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="<?php echo BASE_URL; ?>instructor/dashboard" class="text-decoration-none text-secondary">
+            &larr; Quay về trang chủ
+        </a>
+    </div>
+
+</div>    
+</div>
+<?php include 'views/layouts/footer.php';

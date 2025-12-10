@@ -263,7 +263,25 @@ switch ($request_uri) {
     case 'lesson':
         $lessonController->index();
         break;
+    case 'lesson/create':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->store();
+        } else {
+            $lessonController->create();
+        }
+        break;
 
+    case 'lesson/edit':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->update();
+        } else {
+            $lessonController->edit();
+        }
+        break;
+
+    case 'lesson/delete':
+        $lessonController->delete();
+        break;
     // --- 404 NOT FOUND ---
     default:
         http_response_code(404);
