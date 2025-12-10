@@ -1,27 +1,4 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Chỉnh sửa khóa học</title>
-    <style>
-        /* CSS cơ bản */
-        body { font-family: sans-serif; padding: 20px; color: #333; }
-        .container { max-width: 800px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 5px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; }
-        input[type="text"], input[type="number"], select, textarea, input[type="file"] {
-            width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;
-        }
-        .btn { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; color: white; text-decoration: none; display: inline-block;}
-        .btn-submit { background-color: #ffc107; color: black; } 
-        .btn-back { background-color: #6c757d; margin-right: 10px; }
-        
-        .current-image-box { margin: 10px 0; padding: 10px; border: 1px dashed #ccc; background: #f9f9f9; display: inline-block;}
-        .current-image-box img { max-width: 200px; height: auto; display: block; margin-bottom: 5px; }
-        .note { font-size: 0.9em; color: #666; font-style: italic; }
-    </style>
-</head>
-<body>
+
 
 <div class="container">
     <h2>✏️ Chỉnh sửa khóa học</h2>
@@ -98,5 +75,3 @@
     </form>
 </div>
 
-</body>
-</html>

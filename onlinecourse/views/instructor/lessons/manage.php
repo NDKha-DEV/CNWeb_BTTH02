@@ -1,47 +1,82 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Quản lý bài học</title>
-</head>
-<body>
+<?php include 'views/layouts/header.php';
+    include 'views/layouts/sidebar.php';
+    ?>
+<div>
 
-    <h2>Danh sách bài học của khóa học <?php echo htmlspecialchars($courseTitle); ?></h2>
+<div class="container py-4">
 
-    <a href="<?php echo BASE_URL; ?>course/manage">⬅️ Quay lại danh sách khóa học</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="h3 mb-0 text-primary">📚 Danh sách bài học</h2>
+            <small class="text-muted">Khóa học: <strong><?php echo htmlspecialchars($courseTitle); ?></strong></small>
+        </div>
+        
+        <div>
+            <a href="<?php echo BASE_URL; ?>course/manage" class="btn btn-outline-secondary me-2">
+                &larr; Quay lại
+            </a>
+            <a href="<?php echo BASE_URL; ?>lesson/create?course_id=<?php echo $course_id; ?>" class="btn btn-success">
+                <i class="bi bi-plus-lg"></i> + Thêm bài học mới
+            </a>
+        </div>
+    </div>
 
-    <a href="<?php echo BASE_URL; ?>lesson/create?course_id=<?php echo $course_id; ?>" 
-       style="background: green; color: white; padding: 5px;">
-       + Thêm bài học mới
-    </a>
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="text-center" width="10%">Thứ tự</th>
+                            <th scope="col" width="65%">Tên bài học</th>
+                            <th scope="col" class="text-center" width="25%">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if($lessons->rowCount() > 0): ?>
+                            <?php while ($row = $lessons->fetch(PDO::FETCH_ASSOC)): ?>
+                            <tr>
+                                <td class="text-center">
+                                    <span class="badge bg-secondary rounded-circle" style="width: 30px; height: 30px; line-height: 25px;">
+                                        <?php echo $row['lesson_order']; ?>
+                                    </span>
+                                </td>
 
-    <hr>
+                                <td>
+                                    <div class="fw-bold text-dark"><?php echo htmlspecialchars($row['title']); ?></div>
+                                </td>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Thứ tự</th>
-                <th>Tên bài học</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if($lessons->rowCount() > 0): ?>
-                <?php while ($row = $lessons->fetch(PDO::FETCH_ASSOC)): ?>
-                <tr>
-                    <td><?php echo $row['lesson_order']; ?></td>
-                    <td><?php echo $row['title']; ?></td>
-                    <td>
-                        <a href="<?php echo BASE_URL; ?>lesson/edit?id=<?php echo $row['id']; ?>">Sửa</a>
-                        <a href="<?php echo BASE_URL; ?>lesson/delete?id=<?php echo $row['id']; ?>">Xóa</a>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <tr><td colspan="3">Chưa có bài học nào. Hãy thêm bài đầu tiên!</td></tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <a href="<?php echo BASE_URL; ?>lesson/edit?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning">
+                                            ✏️ Sửa
+                                        </a>
 
-</body>
-</html>
+                                        <a href="<?php echo BASE_URL; ?>lesson/delete?id=<?php echo $row['id']; ?>" 
+                                           class="btn btn-sm btn-danger"
+                                           onclick="return confirm('⚠️ CẢNH BÁO:\nBạn có chắc chắn muốn xóa bài học này không?');">
+                                           🗑️ Xóa
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="3" class="text-center py-5">
+                                    <div class="text-muted mb-3">Chưa có bài học nào trong khóa này.</div>
+                                    <a href="<?php echo BASE_URL; ?>lesson/create?course_id=<?php echo $course_id; ?>" class="btn btn-outline-primary">
+                                        + Thêm bài học đầu tiên ngay
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+</div>
+<?php include 'views/layouts/footer.php';

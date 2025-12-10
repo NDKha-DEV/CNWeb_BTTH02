@@ -57,7 +57,7 @@ class LessonController {
             die("Lỗi: Khóa học không tồn tại hoặc bạn không có quyền.");
         }
 
-        require_once 'views/instructor/lesson/create.php';
+        require_once 'views/instructor/lessons/create.php';
     }
 
     // 3. Xử lý lưu bài học mới
@@ -74,7 +74,7 @@ class LessonController {
             $this->lessonModel->setLessonOrder($_POST['lesson_order']);
 
             if($this->lessonModel->create()) {
-                header("Location: " . BASE_URL . "lesson/manage?course_id=" . $course_id);
+                header("Location: " . BASE_URL . "lesson?course_id=" . $course_id);
             } else {
                 echo "Lỗi khi tạo bài học.";
             }
@@ -85,12 +85,12 @@ class LessonController {
     public function edit() {
         $id = isset($_GET['id']) ? $_GET['id'] : null;
         $this->lessonModel->setCourseId($id);
-
+        $this->lessonModel->setId($id);
         if($this->lessonModel->readOne()) {
             // Kiểm tra quyền với khóa học chứa bài học này
             if(!$this->checkCourseOwner($this->lessonModel->getCourseId())) die("Không có quyền.");
             
-            require_once 'views/instructor/lesson/edit.php';
+            require_once 'views/instructor/lessons/edit.php';
         } else {
             echo "Không tìm thấy bài học.";
         }

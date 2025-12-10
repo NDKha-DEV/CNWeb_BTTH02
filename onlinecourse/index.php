@@ -15,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Định nghĩa thư mục gốc của ứng dụng trên URL (quan trọng cho chuyển hướng)
 // Thay thế '/onlinecourse/' nếu thư mục ứng dụng của bạn khác.
-define('BASE_URL', '/onlinecourse/'); 
+define('BASE_URL', '/Project/onlinecourse/'); 
 
 
 // ------------------------------------
@@ -262,6 +262,25 @@ switch ($request_uri) {
 
     case 'lesson':
         $lessonController->index();
+        break;
+    case 'lesson/create':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->store();
+        } else {
+            $lessonController->create();
+        }
+        break;
+
+    case 'lesson/edit':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->update();
+        } else {
+            $lessonController->edit();
+        }
+        break;
+
+    case 'lesson/delete':
+        $lessonController->delete();
         break;
 
     // --- 404 NOT FOUND ---
