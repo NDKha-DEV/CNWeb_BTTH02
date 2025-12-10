@@ -53,8 +53,12 @@ $adminController = new AdminController();
 require_once 'controllers/CourseController.php';
 $course = new CourseController();
 
+require_once 'controllers/EnrollmentController.php';
+$enroll = new EnrollmentController();
+
 require_once 'controllers/LessonControler.php';
 $lessonController = new LessonController();
+
 // ------------------------------------
 // 4. CHUYỂN PHÁT YÊU CẦU (DISPATCH)
 // ------------------------------------
@@ -128,7 +132,7 @@ switch ($request_uri) {
          $adminController->approveCourse(); 
          break;
     
-    // --- COURSES --- //
+    // --- Hiển thị Courses cho học sinh --- //
     case 'courses':
 
         if (isset($_GET['action']) && $_GET['action'] === 'search') {
@@ -142,6 +146,71 @@ switch ($request_uri) {
         } else {
             // /onlinecourse/courses
             $course->index();
+        }
+        break;
+    case 'instructor/dashboard':
+        $course->dashboardOfInstructor();
+        break;
+    case 'course/manage':
+        $course->manageCoursesInstructor();
+        break;
+
+    // 2. Tạo khóa học mới
+    case 'course/create':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Nếu submit form (POST) -> Lưu data
+            $course->store();
+        } else {
+            // Nếu truy cập bình thường (GET) -> Hiển thị form
+            $course->create();
+        }
+        break;
+
+    // 3. Sửa khóa học
+    case 'course/edit':
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
+        if ($id) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Submit form sửa -> Cập nhật
+                $course->update($id);
+            } else {
+                // Hiển thị form sửa
+                $course->edit($id);
+            }
+        } else {
+            echo "Lỗi: Không tìm thấy ID khóa học để sửa.";
+        }
+        break;
+
+    // 4. Xóa khóa học
+    case 'course/delete':
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
+        if ($id) {
+            $course->delete($id);
+        } else {
+            echo "Lỗi: Không tìm thấy ID khóa học để xóa.";
+        }
+        break;
+    
+    // --- QUẢN LÝ BÀI HỌC (LESSON) ---
+
+    case 'lesson':
+        $lessonController->index();
+        break;
+
+    // --- Thực hiện hiển thị bài học ---
+    case 'lesson/student':
+        $lessonController->show();
+        break;
+
+    // --- Hiển thị các khóa học đã đăng ký ---
+    case 'enrollment':
+        $enroll->myCourses();
+        break;
+    // --- Thực hiện đăng ký khóa học---
+    case 'enrollment/register':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $enroll->register();
         }
         break;
 

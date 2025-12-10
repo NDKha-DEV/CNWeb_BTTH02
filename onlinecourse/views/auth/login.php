@@ -8,7 +8,7 @@ ob_start();
     <p style="color: red;"><?php echo $error; ?></p>
 <?php endif; ?>
 
-<form action="/onlinecourse/login" method="POST">
+<form action="<?php echo BASE_URL; ?>login" method="POST">
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required><br>
 
@@ -17,7 +17,7 @@ ob_start();
 
     <button type="submit">Đăng nhập</button>
 </form>
-<p>Chưa có tài khoản? <a href="/onlinecourse/register">Đăng ký ngay!</a></p>
+<p>Chưa có tài khoản? <a href="<?php echo BASE_URL; ?>register">Đăng ký ngay!</a></p>
 
 <?php 
 $content = ob_get_clean();

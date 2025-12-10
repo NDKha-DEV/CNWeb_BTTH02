@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kết quả tìm kiếm khóa học</title>
+    <title>Danh sách khóa học</title>
     <style>
         table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #999; padding: 8px; text-align: left; }
@@ -11,10 +11,10 @@
 </head>
 <body>
 
-<h2>Kết quả tìm kiếm khóa học</h2>
+<h2>Danh sách khóa học</h2>
 
 <!-- Form tìm kiếm -->
-<form method="get" action="index.php">
+<form method="get" action="<?php echo BASE_URL; ?>courses">
     <input type="hidden" name="action" value="search">
     <input type="text" name="keyword" placeholder="Tìm theo tiêu đề..." 
            value="<?= isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '' ?>">
@@ -60,7 +60,7 @@
             <?php foreach($courses as $course): ?>
                 <tr>
                     <td>
-                        <a href="index.php?id=<?= $course['id'] ?>">
+                        <a href="<?php echo BASE_URL; ?>courses?id=<?= $course['id'] ?>">
                             <?= htmlspecialchars($course['title']) ?>
                         </a>
                     </td>
@@ -87,6 +87,6 @@
         <?php endif; ?>
     </tbody>
 </table>
-
+<p><a href="<?php echo BASE_URL; ?>welcome">Trở về trang chủ</a></p>
 </body>
 </html>

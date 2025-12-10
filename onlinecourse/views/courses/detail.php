@@ -19,6 +19,32 @@
         <img src="<?= htmlspecialchars($courseModel['image']) ?>" alt="Hình khóa học" width="200">
     <?php endif; ?>
 
-    <p><a href="index.php">← Quay lại danh sách khóa học</a></p>
+    <hr>
+
+    <!-- ===== FORM ĐĂNG KÝ KHÓA HỌC ===== -->
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <form action="<?= BASE_URL ?>enrollment/register" method="POST">
+            <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
+
+            <button type="submit" 
+                    style="
+                        padding: 10px 20px; 
+                        background: green; 
+                        color: white; 
+                        border: none; 
+                        border-radius: 6px;
+                        cursor: pointer;
+                    ">
+                Đăng ký khóa học
+            </button>
+        </form>
+    <?php else: ?>
+        <p style="color:red;"><strong>Bạn cần đăng nhập để đăng ký khóa học.</strong></p>
+        <a href="<?= BASE_URL ?>login">Đăng nhập ngay</a>
+    <?php endif; ?>
+
+    <hr>
+
+    <p><a href="<?= BASE_URL ?>courses">Quay lại danh sách khóa học</a></p>
 </body>
 </html>
