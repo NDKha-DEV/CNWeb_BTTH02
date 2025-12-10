@@ -95,7 +95,6 @@ class LessonController {
             echo "Không tìm thấy bài học.";
         }
     }
-
     // 5. Cập nhật bài học
     public function update() {
         $id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -115,7 +114,7 @@ class LessonController {
             $this->lessonModel->setLessonOrder($_POST['lesson_order']);
 
             if($this->lessonModel->update()) {
-                header("Location: " . BASE_URL . "lesson/manage?course_id=" . $course_id);
+                header("Location: " . BASE_URL . "lesson?course_id=" . $course_id);
             } else {
                 echo "Lỗi cập nhật.";
             }

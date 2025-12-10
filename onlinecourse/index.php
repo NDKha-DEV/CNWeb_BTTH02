@@ -15,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Định nghĩa thư mục gốc của ứng dụng trên URL (quan trọng cho chuyển hướng)
 // Thay thế '/onlinecourse/' nếu thư mục ứng dụng của bạn khác.
-define('BASE_URL', '/Project/onlinecourse/'); 
+define('BASE_URL', '/onlinecourse/'); 
 
 
 // ------------------------------------
@@ -282,7 +282,6 @@ switch ($request_uri) {
     case 'lesson/delete':
         $lessonController->delete();
         break;
-
     // --- 404 NOT FOUND ---
     default:
         http_response_code(404);
