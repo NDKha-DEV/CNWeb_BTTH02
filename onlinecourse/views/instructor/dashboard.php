@@ -65,6 +65,7 @@
             <p>Vui lòng <a href="<?php echo BASE_URL; ?>login">đăng nhập</a> để bắt đầu tạo khóa học của bạn.</p>
         <?php endif; ?>
     </div>
-
+    
+    <?php include 'views/instructor/my_courses.php'; ?>
 </body>
 </html>

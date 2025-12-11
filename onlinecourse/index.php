@@ -244,6 +244,10 @@ switch ($request_uri) {
     case 'lesson/upload':
         $lessonController->upload();
         break;
+    
+        case 'course/students': 
+        $course->listStudents();
+        break;
     // --- 404 NOT FOUND ---
     default:
         http_response_code(404);

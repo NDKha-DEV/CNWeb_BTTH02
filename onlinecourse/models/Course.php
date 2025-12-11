@@ -208,4 +208,18 @@ class Course{
         $stmt->bindParam(1, $this->id);
         return $stmt->execute();
     }
+
+    public function getStudentsByCourse($course_id) {
+    // Kết nối bảng users và enrollments
+    $query = "SELECT u.id, u.username, u.email, u.fullname, e.enrolled_date, e.progress
+              FROM users u
+              JOIN enrollments e ON u.id = e.student_id
+              WHERE e.course_id = :course_id
+              ORDER BY e.enrolled_date DESC";
+
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(":course_id", $course_id);
+    $stmt->execute();
+    return $stmt;
+}
 }
