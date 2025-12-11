@@ -1,0 +1,36 @@
+/* assets/css/auth.css */
+.card {
+    border-radius: 20px !important;
+}
+
+.card-header {
+    border-radius: 20px 20px 0 0 !important;
+}
+
+.form-control:focus,
+.input-group:focus-within .form-control {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25) !important;
+}
+
+.input-group-text {
+    background-color: #f8f9fa !important;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.alert {
+    border: none;
+    border-radius: 12px;
+}
