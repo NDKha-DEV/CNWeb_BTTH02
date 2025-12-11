@@ -47,7 +47,13 @@
                                 </td>
 
                                 <td class="text-center">
-                                    <div class="btn-group" role="group">
+                                    <div class="" role="group">
+
+                                        <a href="<?php echo BASE_URL; ?>lesson/uploadForm?id=<?php echo $row['id']; ?>" 
+                                            class="btn btn-info btn-sm text-white" 
+                                            title="Upload tài liệu">
+                                            <i class="bi bi-cloud-upload"></i> Tài liệu
+                                        </a>
                                         <a href="<?php echo BASE_URL; ?>lesson/edit?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning">
                                             ✏️ Sửa
                                         </a>

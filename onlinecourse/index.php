@@ -214,55 +214,9 @@ switch ($request_uri) {
         }
         break;
 
-    case 'instructor/dashboard':
-        $course->dashboardOfInstructor();
-        break;
-    case 'course/manage':
-        $course->manageCoursesInstructor();
-        break;
-
-    // 2. Tạo khóa học mới
-    case 'course/create':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Nếu submit form (POST) -> Lưu data
-            $course->store();
-        } else {
-            // Nếu truy cập bình thường (GET) -> Hiển thị form
-            $course->create();
-        }
-        break;
-
-    // 3. Sửa khóa học
-    case 'course/edit':
-        $id = isset($_GET['id']) ? $_GET['id'] : null;
-        if ($id) {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // Submit form sửa -> Cập nhật
-                $course->update($id);
-            } else {
-                // Hiển thị form sửa
-                $course->edit($id);
-            }
-        } else {
-            echo "Lỗi: Không tìm thấy ID khóa học để sửa.";
-        }
-        break;
-
-    // 4. Xóa khóa học
-    case 'course/delete':
-        $id = isset($_GET['id']) ? $_GET['id'] : null;
-        if ($id) {
-            $course->delete($id);
-        } else {
-            echo "Lỗi: Không tìm thấy ID khóa học để xóa.";
-        }
-        break;
     
     // --- QUẢN LÝ BÀI HỌC (LESSON) ---
 
-    case 'lesson':
-        $lessonController->index();
-        break;
     case 'lesson/create':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $lessonController->store();
@@ -281,6 +235,14 @@ switch ($request_uri) {
 
     case 'lesson/delete':
         $lessonController->delete();
+        break;
+    
+    case 'lesson/uploadForm':
+        $lessonController->uploadForm();
+        break;
+    
+    case 'lesson/upload':
+        $lessonController->upload();
         break;
     // --- 404 NOT FOUND ---
     default:

@@ -24,7 +24,7 @@
     <!-- ===== FORM ĐĂNG KÝ KHÓA HỌC ===== -->
     <?php if (isset($_SESSION['user_id'])): ?>
         <form action="<?= BASE_URL ?>enrollment/register" method="POST">
-            <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
+            <input type="hidden" name="course_id" value="<?= $courseModel['id'] ?>">
 
             <button type="submit" 
                     style="

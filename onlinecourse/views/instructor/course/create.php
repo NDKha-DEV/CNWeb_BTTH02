@@ -1,8 +1,5 @@
-
-
 <div class="container">
     <h2>+ Tạo khóa học mới</h2>
-    
     <form action="<?php echo BASE_URL; ?>course/create" method="POST" enctype="multipart/form-data">
         
         <div class="form-group">
