@@ -1,0 +1,31 @@
+/* assets/css/course-detail.css */
+.course-detail-img {
+	max-height: 400px;
+	object-fit: cover;
+	transition: transform 0.4s ease;
+}
+.course-detail-img:hover {
+	transform: scale(1.02);
+}
+
+.card {
+	border-radius: 16px !important;
+	overflow: hidden;
+}
+
+.btn-success {
+	background: linear-gradient(135deg, #28a745, #20c997);
+	border: none;
+	padding: 14px 20px;
+	font-size: 1.1rem;
+	transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4);
+}
+
+.sticky-top {
+	z-index: 10;
+}
