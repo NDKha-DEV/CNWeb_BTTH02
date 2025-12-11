@@ -1,118 +1,66 @@
 <?php
+// components/navbar.php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-$isLoggedIn = isset($_SESSION['user']);
-$role = $isLoggedIn ? $_SESSION['user']['role'] : 'guest';
+// Get user role (default = guest if not logged in)
+$role = $_SESSION['user_role'] ?? -1;
+$username = $_SESSION['username'] ?? null;
+$is_logged_in = ($role !== -1);
 ?>
 
-<aside class="sidebar">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="<?= BASE_URL ?>">OnlineCourse</a>
 
-	<nav class="sidebar-nav">
-		<ul>
-			<li>
-				<a href="/index.php" class="<?= $currentPage ?? '' === 'home' ? 'active' : '' ?>">
-					Trang chủ
-				</a>
-			</li>
-			<li>
-				<a href="/courses/index.php" class="<?= $currentPage ?? '' === 'courses' ? 'active' : '' ?>">
-					Tất cả khóa học
-				</a>
-			</li>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-			<?php if (!$isLoggedIn): ?>
-				<li>
-					<a href="/auth/login.php">
-						Đăng nhập
-					</a>
-				</li>
-				<li>
-					<a href="/auth/register.php">
-						Đăng ký
-					</a>
-				</li>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
 
-			<?php else: ?>
-				<li>
-					<a href="/auth/logout.php">
-						Đăng xuất
-					</a>
-				</li>
-				<hr>
+                <?php if ($role === 2): ?>
+                    <!-- ADMIN MENU -->
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>admin/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>admin/users">Manage Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>admin/categories">Manage Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>admin/courses/pending">Pending Courses</a></li>
 
-				<?php if ($role === 'student'): ?>
-					<li><strong>Học viên</strong></li>
-					<li>
-						<a href="/student/dashboard.php" class="<?= $currentPage ?? '' === 'student_dashboard' ? 'active' : '' ?>">
-							Dashboard</a>
-					</li>
-					<li>
-						<a href="/student/my_courses.php">
-							Khóa học của tôi
-						</a>
-					</li>
-					<li>
-						<a href="/student/course_progress.php">
-							Tiến độ học tập
-						</a>
-					</li>
+                <?php elseif ($role === 1): ?>
+                    <!-- INSTRUCTOR MENU -->
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>instructor/dashboard">Manage Courses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>course/create">New Course</a></li>
 
-				<?php elseif ($role === 'instructor'): ?>
-					<li><strong> Giảng viên</strong></li>
-					<li>
-						<a href="/instructor/dashboard.php">
-							Dashboard
-						</a>
-					</li>
-					<li>
-						<a href="/instructor/my_courses.php">
-							Khóa học của tôi
-						</a>
-					</li>
-					<li>
-						<a href="/instructor/course/create.php">
-							Tạo khóa học mới
-						</a>
-					</li>
-					<li>
-						<a href="/instructor/students/list.php">
-							Học viên đăng ký
-						</a>
-					</li>
+                <?php elseif ($role === 0): ?>
+                    <!-- STUDENT MENU -->
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>enrollment">My Courses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>courses">All Courses</a></li>
 
-				<?php elseif ($role === 'admin'): ?>
-					<li><strong>️ Quản trị viên</strong></li>
-					<li>
-						<a href="/admin/dashboard.php">
-							Admin Dashboard
-						</a>
-					</li>
-					<li>
-						<a href="/admin/users/manage.php">
-							Quản lý người dùng
-						</a>
-					</li>
-					<li>
-						<a href="/admin/categories/list.php">
-							Quản lý danh mục
-						</a>
-					</li>
-					<li>
-						<a href="/admin/reports/statistics.php">
-							Thống kê hệ thống
-						</a>
-					</li>
-					<li>
-						<a href="/courses/index.php?pending=1">
-							Duyệt khóa học mới
-						</a>
-					</li>
-				<?php endif; ?>
+                <?php endif; ?>
 
-			<?php endif; ?>
-		</ul>
-	</nav>
+            </ul>
 
-	<div class="sidebar-footer">
-		<small>© 2025 Online Course</small>
-	</div>
-</aside>
+            <!-- Right side: Login or User menu -->
+            <ul class="navbar-nav ms-auto">
+                <?php if (!$is_logged_in): ?>
+                    <!-- GUEST -->
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light px-4" href="<?= BASE_URL ?>login">Login</a>
+                    </li>
+                <?php else: ?>
+                    <!-- LOGGED IN USER -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <?= htmlspecialchars($username) ?>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item text-danger" href="<?= BASE_URL ?>logout">Logout</a></li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </div>
+</nav>
