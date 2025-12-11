@@ -60,7 +60,7 @@ class AuthController{
                     header('Location: ' . BASE_URL . 'admin/dashboard');
                 } else {
                     // Nếu là Học viên hoặc Giảng viên, chuyển hướng đến trang chào mừng
-                    header('Location: ' . BASE_URL . 'welcome');
+                    header('Location: ' . BASE_URL . 'home');
                 }
                 exit;
             } else {

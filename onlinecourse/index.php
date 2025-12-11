@@ -15,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Định nghĩa thư mục gốc của ứng dụng trên URL (quan trọng cho chuyển hướng)
 // Thay thế '/onlinecourse/' nếu thư mục ứng dụng của bạn khác.
-define('BASE_URL', '/onlinecourse/'); 
+define('BASE_URL', '/btth2/onlinecourse/'); 
 
 
 // ------------------------------------
@@ -59,6 +59,9 @@ $enroll = new EnrollmentController();
 require_once 'controllers/LessonControler.php';
 $lessonController = new LessonController();
 
+require_once 'controllers/HomeController.php';
+$homeController = new HomeController();
+
 // ------------------------------------
 // 4. CHUYỂN PHÁT YÊU CẦU (DISPATCH)
 // ------------------------------------
@@ -67,9 +70,7 @@ switch ($request_uri) {
     case '/':
     case 'home':
         // Trang chủ
-        echo "<h1>Chào mừng đến với Hệ thống Khóa học Online!</h1>
-        <p>Vui lòng <a href='" . BASE_URL . "login'>Đăng nhập</a> 
-        hoặc <a href='" . BASE_URL . "register'>Đăng ký</a>.</p>";
+        $homeController->index();
         break;
         
     // --- ĐĂNG KÝ ---
