@@ -48,7 +48,8 @@ class CourseController {
             $result = $this->courseModel->getAll();
         }
 
-        $courses = $result->fetchAll(PDO::FETCH_ASSOC);
+        $coursesAll = $this->courseModel->getAll()->fetchAll(PDO::FETCH_ASSOC);
+        $coursesSearch = $result->fetchAll(PDO::FETCH_ASSOC);
         include __DIR__ . "/../views/courses/search.php";
     }
 

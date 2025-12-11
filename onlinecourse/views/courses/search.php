@@ -22,7 +22,7 @@
     <!-- Combobox category từ dữ liệu search -->
     <?php
     $categories = [];
-    foreach($courses as $c){
+    foreach($coursesAll as $c){
         $categories[$c['category_id']] = $c['category_name'];
     }
     ?>
@@ -56,8 +56,8 @@
         </tr>
     </thead>
     <tbody>
-        <?php if (!empty($courses)): ?>
-            <?php foreach($courses as $course): ?>
+        <?php if (!empty($coursesSearch)): ?>
+            <?php foreach($coursesSearch as $course): ?>
                 <tr>
                     <td>
                         <a href="<?php echo BASE_URL; ?>courses?id=<?= $course['id'] ?>">
