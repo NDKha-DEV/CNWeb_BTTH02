@@ -58,6 +58,7 @@ class CourseController {
     // Dashboard Instructor
     public function dashboardOfInstructor(){
         $this->requirePermission();
+        $courses = $this->myCourses();
         require_once 'views/instructor/dashboard.php';
     }
     // Chặn truy cập nếu không có quyền truy cập
@@ -207,6 +208,43 @@ class CourseController {
             echo "Lỗi khi không xóa ở cơ sở dữ liệu";
         }
     }
+
+    //CHỨC NĂNG HIỂN XEM HỌC VIÊN CỦA TỪNG KHÓA HỌC
+    // 1. Hiển thị danh sách khóa học của giảng viên (Giao diện my_courses.php)
+public function myCourses() {
+    $this->requirePermission(); // Đảm bảo đã đăng nhập
+    $currentUserId = AuthController::getCurrentUserId();
+    
+    // Lấy tất cả khóa học của giảng viên này
+    $courses = $this->courseModel->readAllByInstructor($currentUserId);
+    
+    return $courses;
+}
+
+// 2. Hiển thị danh sách học viên của một khóa học (Giao diện list_student.php)
+public function listStudents() {
+    $this->requirePermission();
+
+    $course_id = isset($_GET['course_id']) ? $_GET['course_id'] : null;
+    
+    if(!$course_id) {
+        header('Location:' . BASE_URL . 'instructor/dashboard');
+        exit;
+    }
+
+    // Lấy thông tin khóa học để hiện tên
+    $this->courseModel->id = $course_id;
+    $this->courseModel->readOne();
+    $course_title = $this->courseModel->title;
+
+    // Lấy danh sách học viên từ Model (Hàm vừa viết ở Bước 1)
+    $students = $this->courseModel->getStudentsByCourse($course_id);
+
+    // Gọi View
+    require_once 'views/instructor/students/list.php';
+}
+
+
     // Các hàm hỗ trợ
     private function handleImageUpload($file) {
        // 1. Cấu hình thư mục lưu trữ
