@@ -32,7 +32,7 @@ Thực hiện các bước sau để chạy ứng dụng trên môi trường XA
     - Bạn cần phải chạy các file SQL tạo bảng (`users`, `courses`, `categories`, `enrollments`, `lessons`, `view_logs`).
     - _(Ghi chú: Nếu có file `.sql` tổng hợp, hãy hướng dẫn import tại đây.)_
     - \_Sử dụng file CreateTable_TH02.sql để tạo ra cơ sở dữ liệu và các bảng dữ liệu
-    - \_Sử dụng InsertDB_TH02.sql để import các dòng dữ liệu mẫu của các bảng (Trừ bảng Users)
+    - \_Sử dụng InsertDB_TH02.sql để import các dòng dữ liệu mẫu của các bảng
 
 ### C. Cấu hình Ứng dụng
 
@@ -109,11 +109,8 @@ Hệ thống được thiết kế dựa trên mô hình MVC với 3 vai trò ch
 - **Giảng viên:** `instructor@example.com` / `123456`
 - **Học viên:** `student@example.com` / `123456`
 
-_(Lưu ý: Mật khẩu này nên được mã hóa trong DB, nhưng được hiển thị rõ ràng cho mục đích test.)_
-
 ## 📝 Ghi công & Bản quyền
 
 Dự án này được phát triển như một bài tập/đồ án.
 
-- **Tác giả:** [Tên/ID của bạn]
-- **Bản quyền:** [Chọn Giấy phép, ví dụ: MIT License]
+- **Tác giả:** [NDKha-DEV,germnguyen,nganhcc,SonTuanmandosupport]
