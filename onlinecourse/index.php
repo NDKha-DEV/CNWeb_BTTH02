@@ -14,7 +14,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Định nghĩa thư mục gốc của ứng dụng trên URL (quan trọng cho chuyển hướng)
 // Thay thế '/onlinecourse/' nếu thư mục ứng dụng của bạn khác.
-define('BASE_URL', '/CNWeb_BTTH02/onlinecourse/'); 
+define('BASE_URL', '/btth2/onlinecourse/'); 
 
 
 // ------------------------------------
@@ -46,7 +46,7 @@ require_once 'controllers/AdminController.php';
 // Yêu cầu Model cho Log
 require_once 'config/Database.php'; // Cần Database để khởi tạo Model
 
-//1. require_once 'models/ViewLog.php';
+require_once 'models/ViewLog.php';
 
 // Khởi tạo Database (Nếu chưa có)
 $database = new Database();
@@ -57,7 +57,7 @@ $authController = new AuthController();
 // $courseController = new CourseController();
 $adminController = new AdminController();
 // Khởi tạo Model Log Mới
-//2. $viewLog = new ViewLog($db);
+$viewLog = new ViewLog($db);
 
 require_once 'controllers/CourseController.php';
 $course = new CourseController();
