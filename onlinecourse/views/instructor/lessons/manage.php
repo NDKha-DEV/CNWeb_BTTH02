@@ -1,5 +1,5 @@
-<?php include 'views/layouts/header.php';
-    include 'views/layouts/sidebar.php';
+<?php 
+include './views/layouts/header.php';
     ?>
 <div>
 

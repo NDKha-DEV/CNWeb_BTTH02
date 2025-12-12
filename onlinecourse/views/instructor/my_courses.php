@@ -1,3 +1,4 @@
+
 <div class="container py-4">
     <h3 class="mb-4">🎓 Khóa học của tôi</h3>
     
@@ -5,10 +6,10 @@
         <?php if(isset($courses) && $courses->rowCount() > 0): ?>
             <?php while ($row = $courses->fetch(PDO::FETCH_ASSOC)): 
                 
-                // ❗ BỔ SUNG LOGIC XÁC ĐỊNH TRẠNG THÁI (Status)
-                $status = (int)$row['status'];
+                // ❗ LOGIC XÁC ĐỊNH TRẠNG THÁI (Status)
+                $status = (int)($row['status'] ?? 0); // Đảm bảo an toàn
                 $statusText = 'Không rõ';
-                $statusClass = 'badge-secondary'; // Bootstrap 5 uses bg-*
+                $statusClass = 'bg-secondary'; 
                 
                 switch ($status) {
                     case 1:
@@ -38,22 +39,26 @@
                     <div class="card h-100 shadow-sm hover-effect">
                         <?php 
                             $img = !empty($row['image']) ? $row['image'] : 'default.jpg';
+                            // Giả định BASE_URL đã được định nghĩa
                             $imgSrc = BASE_URL . "assets/uploads/courses/" . $img;
                         ?>
                         
                         <div style="position: relative;">
-                            <img src="<?php echo $imgSrc; ?>" class="card-img-top" alt="Course Image" style="height: 180px; object-fit: cover;">
-                            <span class="badge <?php echo $statusClass; ?> position-absolute top-0 end-0 m-2 py-2 px-3 fw-bold">
-                                <?php echo $statusText; ?>
+                            <img src="<?php echo htmlspecialchars($imgSrc); ?>" class="card-img-top" alt="Course Image" style="height: 180px; object-fit: cover;">
+                            
+                            <span class="badge <?php echo htmlspecialchars($statusClass); ?> position-absolute top-0 end-0 m-2 py-2 px-3 fw-bold">
+                                <?php echo htmlspecialchars($statusText); ?>
                             </span>
                         </div>
+                        
                         <div class="card-body">
-                            <h5 class="card-title text-truncate" title="<?php echo $row['title']; ?>">
+                            <h5 class="card-title text-truncate" title="<?php echo htmlspecialchars($row['title']); ?>">
                                 <?php echo htmlspecialchars($row['title']); ?>
                             </h5>
+                            
                             <p class="card-text text-muted small mb-3">
-                                <i class="bi bi-bar-chart"></i> <?php echo $row['level']; ?> | 
-                                <i class="bi bi-clock"></i> <?php echo $row['duration_weeks']; ?> tuần
+                                <i class="bi bi-bar-chart"></i> <?php echo htmlspecialchars($row['level'] ?? 'N/A'); ?> | 
+                                <i class="bi bi-clock"></i> <?php echo htmlspecialchars($row['duration_weeks'] ?? 'N/A'); ?> tuần
                             </p>
                             
                             <?php if ($status !== 2): ?>

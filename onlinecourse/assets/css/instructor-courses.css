@@ -1,0 +1,105 @@
+/*
+ * File: instructor-courses.css
+ * Mô tả: CSS tùy chỉnh cho trang "Khóa học của tôi" (Giảng viên)
+ * Giả định sử dụng Bootstrap 5 (với các class như bg-*, py-*, w-100, fw-bold)
+ */
+
+:root {
+    --primary-color: #0d6efd; /* Bootstrap Blue */
+    --warning-color: #ffc107; /* Bootstrap Yellow */
+    --danger-color: #dc3545; /* Bootstrap Red */
+    --success-color: #198754; /* Bootstrap Green */
+    --info-color: #0dcaf0; /* Bootstrap Cyan */
+    --secondary-color: #6c757d; /* Bootstrap Gray */
+    --shadow-light: 0 .125rem .25rem rgba(0,0,0,.075);
+    --shadow-hover: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+
+body {
+    background-color: #f8f9fa; /* Nền nhẹ */
+}
+
+.container {
+    max-width: 1200px;
+}
+
+h3.mb-4 {
+    color: var(--primary-color);
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+/* --- Thẻ Khóa học (Card) --- */
+
+.card {
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-light);
+}
+
+.hover-effect:hover {
+    box-shadow: var(--shadow-hover) !important;
+    transform: translateY(-3px);
+}
+
+.card-img-top {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+/* Định dạng Badge Trạng thái */
+.badge {
+    opacity: 0.95;
+    /* Đảm bảo badge nằm trên ảnh */
+    z-index: 10; 
+}
+
+/* Tùy chỉnh màu sắc chi tiết cho Badge Status (đã dùng trong PHP) */
+/* .bg-info.text-dark (Nháp)
+ * .bg-success (Đã xuất bản)
+ * .bg-warning.text-dark (Chờ duyệt)
+ * .bg-danger (Bị từ chối)
+ * .bg-secondary (Mới tạo/Không rõ)
+ */
+
+/* Tiêu đề Khóa học */
+.card-title {
+    color: var(--text-color);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    height: 1.5em; /* Giữ chiều cao cố định */
+}
+
+/* Thông tin chi tiết (Level, Duration) */
+.card-text.small i {
+    margin-right: 5px;
+    color: var(--secondary-color);
+}
+
+/* Footer Card (Nút hành động) */
+.card-footer {
+    padding: 1rem 1rem 1.5rem 1rem;
+}
+
+/* Nút Chỉnh sửa / Gửi duyệt */
+.btn-warning {
+    /* Đảm bảo màu nút này nổi bật */
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+}
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #e0a800;
+}
+
+/* Nút Quản lý Bài học */
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
