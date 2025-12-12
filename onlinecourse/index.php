@@ -15,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Định nghĩa thư mục gốc của ứng dụng trên URL (quan trọng cho chuyển hướng)
 // Thay thế '/onlinecourse/' nếu thư mục ứng dụng của bạn khác.
-define('BASE_URL', '/btth2/onlinecourse/'); 
+define('BASE_URL', '/onlinecourse/'); 
 
 
 // ------------------------------------
@@ -44,11 +44,19 @@ if (empty($request_uri)) {
 require_once 'controllers/AuthController.php';
 // require_once 'controllers/CourseController.php';
 require_once 'controllers/AdminController.php';
+// Yêu cầu Model cho Log
+require_once 'config/Database.php'; // Cần Database để khởi tạo Model
+require_once 'models/ViewLog.php';
+// Khởi tạo Database (Nếu chưa có)
+$database = new Database();
+$db = $database->getConnection();
 
 // Khởi tạo Controller
 $authController = new AuthController();
 // $courseController = new CourseController();
 $adminController = new AdminController();
+// Khởi tạo Model Log Mới
+$viewLog = new ViewLog($db);
 
 require_once 'controllers/CourseController.php';
 $course = new CourseController();
@@ -65,6 +73,16 @@ $homeController = new HomeController();
 // ------------------------------------
 // 4. CHUYỂN PHÁT YÊU CẦU (DISPATCH)
 // ------------------------------------
+
+// Lấy User ID hiện tại hoặc NULL nếu là khách
+$current_user_id = $_SESSION['user_id'] ?? NULL;
+
+// Ghi Log lượt xem trước khi thực thi Controller
+// Chỉ ghi log nếu không phải là yêu cầu tài nguyên tĩnh (css, js, images)
+if (!preg_match('/\.(css|js|png|jpg|jpeg|gif|ico)$/i', $request_uri)) {
+    // Dùng $request_uri để lưu đường dẫn đã làm sạch
+    $viewLog->logView($current_user_id, $request_uri); 
+}
 
 switch ($request_uri) {
     case '/':
@@ -113,26 +131,56 @@ switch ($request_uri) {
     case 'admin/users/toggle-status':
         $adminController->toggleUserStatus();
         break;
+    // Trong index.php (phần GET)
+    case 'admin/users/create-instructor':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Xử lý POST (Khi người dùng bấm Submit)
+            $adminController->handleCreateInstructor();
+        } else {
+            // Xử lý GET (Hiển thị form)
+            $adminController->createInstructor();
+        }
+        break;
+    // --- ADMIN: THỐNG KÊ LƯỢT XEM ---
+    case 'admin/statistics/views':
+        $adminController->viewStatistics();
+        break;
 
     // --- ADMIN: QUẢN LÝ DANH MỤC ---
     case 'admin/categories':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-             $adminController->createCategory(); // Xử lý tạo mới
+            $adminController->createCategory(); // Xử lý tạo mới
         } else {
-             $adminController->manageCategories(); // Hiển thị danh sách
+            $adminController->manageCategories(); // Hiển thị danh sách
         }
         break;
+
+    case 'admin/categories/update':
+        $adminController->updateCategory();
+        break;
+
+    case 'admin/categories/edit':
+        $adminController->editCategory();
+        break;
+    // case 'admin/categories/delete':
+    //     $adminController->deleteCategory();
+    //     break;
 
     // --- ADMIN: DUYỆT KHÓA HỌC ---
     case 'admin/courses/pending':
         $adminController->pendingCourses();
         break;
+
     case 'admin/courses/approve':
          // Tác vụ này cần thêm ID khóa học (ví dụ: /admin/courses/approve?id=123)
          // Tạm thời xử lý qua POST hoặc GET đơn giản
          $adminController->approveCourse(); 
          break;
-    
+         
+    case 'admin/courses/review':
+            // Phương thức AdminController::approveCourse() xử lý cả Phê duyệt và Từ chối
+            $adminController->approveCourse(); 
+            break;
     // --- Hiển thị Courses cho học sinh --- //
     case 'courses':
 
@@ -193,6 +241,9 @@ switch ($request_uri) {
         }
         break;
     
+    case 'course/submit-review':
+        $course->submitForReview(); // Phương thức mới sẽ được tạo
+        break;
     // --- QUẢN LÝ BÀI HỌC (LESSON) ---
 
     case 'lesson':

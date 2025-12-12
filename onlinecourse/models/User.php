@@ -6,6 +6,7 @@ class User {
     private $conn;
     private $table_name = "users";
 
+    public $id;
     public $username;
     public $password;
     public $fullname;    
@@ -76,6 +77,51 @@ class User {
 
         return false;
     }
+
+    public function createUserByAdmin($username, $email, $fullname, $password_hashed, $role) {
+        
+        $query = "INSERT INTO " . $this->table_name . "
+                  SET username=:username, email=:email, fullname=:fullname, password=:password, role=:role";
+                  
+        $stmt = $this->conn->prepare($query);
+
+        // 1. Làm sạch và binding dữ liệu (Phòng XSS)
+        $username = htmlspecialchars(strip_tags($username));
+        $email = htmlspecialchars(strip_tags($email));
+        $fullname = htmlspecialchars(strip_tags($fullname));
+
+        $stmt->bindParam(":username", $username);
+        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":fullname", $fullname);
+        $stmt->bindParam(":password", $password_hashed);
+        $stmt->bindParam(":role", $role, PDO::PARAM_INT);
+
+        // 2. Thực thi
+        try {
+            if($stmt->execute()) {
+                return true;
+            }
+        } catch(PDOException $e) {
+            // Lỗi khi email/username đã tồn tại (UNIQUE constraint)
+            // Bạn có thể log $e->getMessage() ở đây
+            return false;
+        }
+
+        return false;
+    }
+
+    /**
+     * Kiểm tra username hoặc email đã tồn tại (Hàm hỗ trợ cần thiết)
+     */
+    public function isExist($username, $email) {
+        $query = "SELECT id FROM " . $this->table_name . " WHERE username = :username OR email = :email LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
+
     /**
      * Đọc tất cả người dùng
      * @return PDOStatement Danh sách người dùng

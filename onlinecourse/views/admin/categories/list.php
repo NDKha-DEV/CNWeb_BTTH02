@@ -3,12 +3,10 @@
 
 // Giả định: Bạn đã có biến $categories từ AdminController::manageCategories()
 if (!isset($categories)) {
-    // Nếu biến không tồn tại (lỗi), gán mảng rỗng để tránh lỗi foreach
     $categories = []; 
 }
 
 $page_title = "Quản lý Danh mục Khóa học";
-
 // require 'views/layouts/header.php'; 
 ?>
 
@@ -23,6 +21,9 @@ $page_title = "Quản lý Danh mục Khóa học";
         .category-table th, .category-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
         .form-create input[type="text"] { width: 60%; padding: 8px; margin-right: 10px; }
         .form-create button { padding: 8px 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .action-button { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px; }
+        .edit-btn { background: #007bff; color: white; }
+        .delete-btn { background: #dc3545; color: white; }
     </style>
 </head>
 <body>
@@ -32,11 +33,18 @@ $page_title = "Quản lý Danh mục Khóa học";
         
         <?php 
         // Hiển thị thông báo (nếu có)
-        if (isset($_GET['success']) && $_GET['success'] === 'created') {
-            echo "<p style='color: green;'>Tạo danh mục thành công!</p>";
+        if (isset($_GET['success'])) {
+            $msg = '';
+            if ($_GET['success'] === 'created') $msg = "Tạo danh mục thành công!";
+            if ($_GET['success'] === 'updated') $msg = "Cập nhật danh mục thành công!";
+            if ($_GET['success'] === 'deleted') $msg = "Xóa danh mục thành công!";
+            if ($msg) echo "<p style='color: green; font-weight: bold;'>{$msg}</p>";
         }
-        if (isset($error)) {
-             echo "<p style='color: red;'>Lỗi: " . htmlspecialchars($error) . "</p>";
+        if (isset($_GET['error'])) {
+            $err = '';
+            if ($_GET['error'] === 'delete_failed') $err = "Xóa thất bại! Có khóa học đang sử dụng danh mục này.";
+            if ($_GET['error'] === 'update_failed') $err = "Cập nhật thất bại.";
+            if ($err) echo "<p style='color: red; font-weight: bold;'>Lỗi: {$err}</p>";
         }
         ?>
 
@@ -64,8 +72,12 @@ $page_title = "Quản lý Danh mục Khóa học";
                             <td><?= htmlspecialchars($category['id']) ?></td>
                             <td><?= htmlspecialchars($category['name']) ?></td>
                             <td>
-                                <button disabled style="opacity: 0.5;">Sửa</button>
-                                <button disabled style="opacity: 0.5;">Xóa</button>
+                                <a href="<?= BASE_URL ?>admin/categories/edit?id=<?= $category['id'] ?>" class="action-button edit-btn">Sửa</a>
+                                
+                                <!-- <form method="POST" action="<?= BASE_URL ?>admin/categories/delete" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn XÓA danh mục này? Thao tác này có thể bị lỗi nếu danh mục đang được sử dụng.');">
+                                    <input type="hidden" name="id" value="<?= htmlspecialchars($category['id']) ?>">
+                                    <button type="submit" class="action-button delete-btn">Xóa</button>
+                                </form> -->
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -77,10 +89,10 @@ $page_title = "Quản lý Danh mục Khóa học";
             </tbody>
         </table>
     </div>
-    <p>Quay lại <a href="/onlinecourse/admin/dashboard">Dashboard</a></p>
+    <p>Quay lại <a href="<?= BASE_URL ?>admin/dashboard">Dashboard</a></p>
 </body>
 </html>
 
 <?php 
 // require 'views/layouts/footer.php'; 
-?>  
+?>

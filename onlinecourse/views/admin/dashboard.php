@@ -66,9 +66,11 @@ require 'views/layouts/header.php'; // Sử dụng header chung
         <h2>🛠️ Điều hướng nhanh</h2>
         <nav class="admin-nav">
             <ul>
+                <li><a href="<?= BASE_URL ?>admin/users/create-instructor" style="background: #28a745;">Tạo Tài khoản Giảng viên</a></li>
                 <li><a href="<?= BASE_URL ?>admin/users">Quản lý Người dùng (Xem, Kích hoạt/Vô hiệu hóa)</a></li>
                 <li><a href="<?= BASE_URL ?>admin/categories">Quản lý Danh mục Khóa học</a></li>
                 <li><a href="<?= BASE_URL ?>admin/courses/pending">Duyệt Phê duyệt Khóa học</a></li>
+                <li><a href="<?= BASE_URL ?>admin/statistics/views">Xem Thống kê Lượt truy cập</a></li>
                 <li><a href="<?= BASE_URL ?>logout" style="background: #dc3545;">Đăng xuất</a></li>
             </ul>
         </nav>

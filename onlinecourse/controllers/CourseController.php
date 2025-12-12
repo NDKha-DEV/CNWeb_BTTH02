@@ -110,6 +110,7 @@ class CourseController {
 
             //Lấy instructor_id từ session hiện tại 
             $this->courseModel->instructor_id = AuthController::getCurrentUserId();
+            $this->courseModel->status = 3;
 
             // Xử lý upload ảnh
             $uploadResult = $this->handleImageUpload($_FILES['image']);
@@ -294,5 +295,26 @@ public function listStudents() {
         if(!empty($fileName) && $fileName != 'default.jpg' && file_exists($target_dir . $fileName)){
             unlink($target_dir . $fileName);
         }
+    }
+    public function submitForReview() {
+        $this->requirePermission(); // Chỉ giảng viên mới có quyền
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
+            $course_id = $_POST['course_id'];
+            
+            // ❗ Trạng thái 3: Pending (Chờ duyệt)
+            $new_status = 3; 
+
+            if ($this->courseModel->updateStatus($course_id, $new_status)) {
+                // Chuyển hướng về trang quản lý khóa học với thông báo thành công
+                header("Location: " . BASE_URL . "course/manage?success=submitted");
+                exit();
+            } else {
+                die("Lỗi: Không thể gửi khóa học đi duyệt.");
+            }
+        }
+        // Nếu truy cập sai phương thức, chuyển hướng về trang quản lý
+        header("Location: " . BASE_URL . "course/manage");
+        exit();
     }
 }

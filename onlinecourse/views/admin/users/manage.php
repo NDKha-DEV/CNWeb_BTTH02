@@ -20,12 +20,19 @@ $page_title = "Quản lý Người dùng";
         .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         .active-status { color: green; font-weight: bold; }
         .inactive-status { color: red; font-weight: bold; }
+        .btn { padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn-success { background-color: #28a745; color: white; border-color: #28a745; }
+        .header-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <h1><?= $page_title ?></h1>
-
+    <div class="header-controls">
+        <h1><?= $page_title ?></h1>
+        <a href="<?= BASE_URL ?>admin/users/create-instructor" class="btn btn-success">
+            + Tạo tài khoản Giảng viên mới
+        </a>
+    </div>
     <?php 
     // Hiển thị thông báo thành công hoặc lỗi (nếu có từ redirect)
     if (isset($_GET['success']) && $_GET['success'] === 'status_updated') {
@@ -34,7 +41,13 @@ $page_title = "Quản lý Người dùng";
     if (isset($_GET['error']) && $_GET['error'] === 'status_failed') {
         echo "<p style='color: red;'>Cập nhật trạng thái người dùng thất bại.</p>";
     }
-    ?>
+    // Thêm thông báo tạo thành công/lỗi
+    if (isset($_SESSION['success'])): ?>
+        <p style='color: green;'><?= $_SESSION['success']; unset($_SESSION['success']); ?></p>
+    <?php endif; 
+    if (isset($_SESSION['error'])): ?>
+        <p style='color: red;'><?= $_SESSION['error']; unset($_SESSION['error']); ?></p>
+    <?php endif; ?>
 
     <table class="admin-table">
         <thead>

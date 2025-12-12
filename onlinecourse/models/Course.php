@@ -11,6 +11,7 @@ class Course{
     public $duration_weeks;
     public $level;
     public $image;
+    public $status;
     public $created_at;
 
     public function __construct($db){
@@ -28,6 +29,7 @@ class Course{
                   FROM " . $this->table_name . " c
                   LEFT JOIN users u ON u.id = c.instructor_id
                   LEFT JOIN categories cat ON cat.id = c.category_id
+                  WHERE c.status = 2
                   ORDER BY c.created_at DESC";
 
         $stmt = $this->conn->prepare($query);
@@ -42,7 +44,7 @@ class Course{
                 FROM " . $this->table_name . " c
                 LEFT JOIN users u ON u.id = c.instructor_id
                 LEFT JOIN categories cat ON cat.id = c.category_id
-                WHERE c.title LIKE :keyword
+                WHERE c.title LIKE :keyword AND c.status = 2
                 ORDER BY c.created_at DESC";
 
         $stmt = $this->conn->prepare($query);
@@ -59,7 +61,7 @@ class Course{
                 FROM " . $this->table_name . " c
                 LEFT JOIN users u ON u.id = c.instructor_id
                 LEFT JOIN categories cat ON cat.id = c.category_id
-                WHERE c.category_id = :category_id
+                WHERE c.category_id = :category_id AND c.status = 2
                 ORDER BY c.created_at DESC";
 
         $stmt = $this->conn->prepare($query);
@@ -76,7 +78,7 @@ class Course{
                 FROM " . $this->table_name . " c
                 LEFT JOIN users u ON u.id = c.instructor_id
                 LEFT JOIN categories cat ON cat.id = c.category_id
-                WHERE c.title LIKE :keyword AND c.category_id = :category_id
+                WHERE c.title LIKE :keyword AND c.category_id = :category_id AND c.status = 2
                 ORDER BY c.created_at DESC";
 
         $stmt = $this->conn->prepare($query);
@@ -94,7 +96,7 @@ class Course{
                 FROM " . $this->table_name . " c
                 LEFT JOIN users u ON u.id = c.instructor_id
                 LEFT JOIN categories cat ON cat.id = c.category_id
-                WHERE c.id = :id
+                WHERE c.id = :id AND c.status = 2
                 LIMIT 1";
 
         $stmt = $this->conn->prepare($query);
@@ -103,7 +105,7 @@ class Course{
         return $stmt->fetch(PDO::FETCH_ASSOC); // Trả về 1 mảng
     }
     public function readAll(){
-            $query = "Select * From ". $this->table_name ;
+            $query = "Select * From ". $this->table_name. " WHERE status = 2 ORDER BY created_at DESC;";
 
             $stmt = $this->conn->prepare($query);
 
@@ -132,8 +134,8 @@ class Course{
     }
     public function create(){
         $query = "Insert Into " . $this->table_name . " 
-                    (title, description, instructor_id, category_id, price, duration_weeks, level, image)
-                    values (:title, :description, :instructor_id, :category_id, :price, :duration_weeks, :level, :image);";
+                    (title, description, instructor_id, category_id, price, duration_weeks, level, image, status)
+                    values (:title, :description, :instructor_id, :category_id, :price, :duration_weeks, :level, :image, :status);";
         $stmt = $this->conn->prepare($query);
 
         $this->title = htmlspecialchars(strip_tags($this->title));
@@ -147,6 +149,7 @@ class Course{
         $stmt->bindParam(':duration_weeks', $this->duration_weeks);
         $stmt->bindParam(':level', $this->level);
         $stmt->bindParam(':image', $this->image);
+        $stmt->bindParam(':status', $this->status, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
             return true;
@@ -170,6 +173,35 @@ class Course{
             $this->duration_weeks = $row['duration_weeks'];
             $this->level = $row['level'];
             $this->image = $row['image'];
+            $this->status = $row['status'];
+            return true;
+        }
+        return false;
+    }
+
+    public function readPending() {
+        $query = "SELECT 
+                    c.id, c.title, c.description, c.created_at, c.instructor_id,
+                    u.fullname as instructor_name, u.email as instructor_email
+                FROM " . $this->table_name . " c
+                LEFT JOIN users u ON c.instructor_id = u.id
+                WHERE c.status = 3
+                ORDER BY c.created_at ASC";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    public function updateStatus($course_id, $new_status) {
+        $query = "UPDATE " . $this->table_name . " SET status = :status, updated_at = NOW() WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':status', $new_status, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $course_id, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
             return true;
         }
         return false;
