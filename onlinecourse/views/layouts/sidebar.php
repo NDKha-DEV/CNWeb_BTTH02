@@ -27,6 +27,8 @@ $is_logged_in = ($role !== -1);
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>admin/users">Manage Users</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>admin/categories">Manage Categories</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>admin/courses/pending">Pending Courses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>admin/statistics/views">Statistics</a></li>
+
 
                 <?php elseif ($role === 1): ?>
                     <!-- INSTRUCTOR MENU -->
