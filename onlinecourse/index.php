@@ -15,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Định nghĩa thư mục gốc của ứng dụng trên URL (quan trọng cho chuyển hướng)
 // Thay thế '/onlinecourse/' nếu thư mục ứng dụng của bạn khác.
-define('BASE_URL', '/onlinecourse/'); 
+define('BASE_URL', '/btth2/onlinecourse/'); 
 
 
 // ------------------------------------
@@ -81,7 +81,10 @@ $current_user_id = $_SESSION['user_id'] ?? NULL;
 // Chỉ ghi log nếu không phải là yêu cầu tài nguyên tĩnh (css, js, images)
 if (!preg_match('/\.(css|js|png|jpg|jpeg|gif|ico)$/i', $request_uri)) {
     // Dùng $request_uri để lưu đường dẫn đã làm sạch
-    $viewLog->logView($current_user_id, $request_uri); 
+    // Chỉ log nếu database connection thành công
+    if ($db !== null) {
+        $viewLog->logView($current_user_id, $request_uri);
+    }
 }
 
 switch ($request_uri) {
