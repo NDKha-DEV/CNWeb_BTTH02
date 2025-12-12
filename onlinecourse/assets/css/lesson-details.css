@@ -1,0 +1,131 @@
+/*
+ * File: lesson-detail.css
+ * Mô tả: CSS cho trang Chi tiết Bài học (Lesson Detail)
+ */
+
+:root {
+    --primary-color: #007bff; /* Xanh dương */
+    --secondary-color: #6c757d; /* Xám đậm */
+    --light-bg: #f8f9fa; /* Nền sáng */
+    --card-bg: #ffffff; /* Nền nội dung */
+    --border-color: #dee2e6;
+    --text-color: #343a40;
+}
+
+body {
+    background-color: var(--light-bg);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+/* --- Container Chính --- */
+.lesson-container {
+    padding: 30px;
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Tiêu đề và Metadata --- */
+.lesson-header h2 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.lesson-metadata {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.lesson-content {
+    margin-top: 25px;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+/* --- Video Embed Responsive --- */
+h3 {
+    color: var(--secondary-color);
+    margin-top: 35px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--primary-color);
+    padding-left: 10px;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    /* Tỷ lệ 16:9 (9 / 16 * 100 = 56.25%) */
+    padding-bottom: 56.25%; 
+    height: 0;
+    margin-bottom: 25px;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Tài liệu Đính kèm --- */
+.materials-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.materials-list li {
+    background-color: var(--light-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    transition: background-color 0.2s;
+}
+
+.materials-list li:hover {
+    background-color: #e9ecef;
+}
+
+.materials-list a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.materials-list a::before {
+    content: "📎"; /* Biểu tượng kẹp giấy */
+    margin-right: 10px;
+}
+
+/* --- Liên kết trở lại --- */
+.back-link {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.back-link a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+}
+
+.back-link a:hover {
+    background-color: #5a6268;
+}

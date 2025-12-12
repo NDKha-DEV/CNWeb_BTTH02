@@ -37,7 +37,7 @@ class EnrollmentController {
 		$check = $this->enrollmentModel->checkEnrollment();
 
 		if ($check->rowCount() > 0) {
-			header('Location: '.BASE_URL.'lesson/student?lesson_id='.$course_id);
+			header('Location: '.BASE_URL.'lessons/student?course_id='.$course_id);
 			exit;
 		}
 
