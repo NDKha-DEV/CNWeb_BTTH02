@@ -25,8 +25,10 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Thứ tự hiển thị</label>
-                            <input type="number" name="lesson_order" class="form-control" value="1" min="1">
-                            <div class="form-text">Số nhỏ sẽ hiển thị trước.</div>
+                            <input type="number" name="lesson_order" class="form-control" 
+                                value="<?php echo isset($nextOrder) ? $nextOrder : 1; ?>" min="1">
+                                
+                            <div class="form-text">Hệ thống tự động đề xuất số tiếp theo.</div>
                         </div>
 
                         <div class="mb-3">

@@ -1,6 +1,5 @@
 <?php 
     include 'views/layouts/header.php';
-    include 'views/layouts/sidebar.php';
 ?>
 <div>
 <div class="container py-4">
@@ -22,6 +21,7 @@
                             <th scope="col" width="12%">Ảnh bìa</th>
                             <th scope="col" width="30%">Tên khóa học</th>
                             <th scope="col" width="18%">Giá / Trình độ</th>
+                            <th scope="col" width="10%">Trạng thái</th>
                             <th scope="col" class="text-center" width="25%">Hành động</th>
                         </tr>
                     </thead>
@@ -71,6 +71,19 @@
                                     </span>
                                 </td>
 
+                                <td class="text-center">
+                                    <?php 
+                                        if($row['status'] == 1): 
+                                    ?>
+                                        <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill border border-success">
+                                            <i class="bi bi-check-circle-fill me-1"></i> Công khai
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill border border-secondary">
+                                            <i class="bi bi-eye-slash-fill me-1"></i> Đang ẩn
+                                        </span>
+                                    <?php endif; ?>
+                                </td>
                                 <td class="text-center">
                                     <!-- <div class="btn-group" role="group"> -->
                                         <a href="<?php echo BASE_URL; ?>lesson?course_id=<?php echo $row['id'];?>" class="btn btn-sm btn-info text-white" title="Quản lý bài học">

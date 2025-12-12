@@ -15,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Định nghĩa thư mục gốc của ứng dụng trên URL (quan trọng cho chuyển hướng)
 // Thay thế '/onlinecourse/' nếu thư mục ứng dụng của bạn khác.
-define('BASE_URL', '/btth2/onlinecourse/'); 
+define('BASE_URL', '/Project/onlinecourse/'); 
 
 
 // ------------------------------------

@@ -12,7 +12,7 @@ class Course{
     public $level;
     public $image;
     public $created_at;
-
+    public $status;
     public function __construct($db){
         $this->conn = $db;
     }

@@ -162,4 +162,22 @@ class Lesson {
 
         return $stmt;
     }
+
+    public function getNextOrder($course_id) {
+    // Tìm số thứ tự lớn nhất hiện tại của khóa học này
+        $query = "SELECT MAX(lesson_order) as max_order FROM " . $this->table_name . " WHERE course_id = :course_id";
+        
+        $stmt = $this->con->prepare($query);
+        $stmt->bindParam(':course_id', $course_id);
+        $stmt->execute();
+        
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Nếu chưa có bài nào (null) thì trả về 1. Nếu có rồi thì lấy max + 1
+        if ($row['max_order'] !== null) {
+            return $row['max_order'] + 1;
+        } else {
+            return 1;
+        }
+    }
 }?>
