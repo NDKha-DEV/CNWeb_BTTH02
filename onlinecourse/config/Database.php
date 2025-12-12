@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $host = "localhost";
-    private $db = "onlinecourse1";
+    private $db = "onlinecourse";
     private $user = "root";
     private $pass = "";
     public $conn;
