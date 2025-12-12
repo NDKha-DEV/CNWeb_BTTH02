@@ -1,0 +1,158 @@
+/*
+ * File: instructor-dashboard.css
+ * Mô tả: CSS cho trang Dashboard chính của Giảng viên.
+ */
+
+:root {
+    --primary-color: #007bff;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+    --dark-color: #343a40;
+    --light-bg: #f8f9fa;
+    --header-bg: #ffffff;
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--light-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Header & Navigation Bar --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background-color: var(--header-bg);
+    box-shadow: var(--shadow-light);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header .logo h2 {
+    color: var(--dark-color);
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.header .actions {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa các nút */
+}
+
+.welcome-text {
+    font-weight: 500;
+    color: var(--dark-color);
+    margin-right: 15px;
+}
+
+/* Định dạng các nút hành động (Button Styling) */
+.btn {
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid transparent;
+    white-space: nowrap; /* Ngăn nút bị ngắt dòng */
+}
+
+.btn-info {
+    background-color: var(--info-color);
+    color: white;
+}
+.btn-info:hover {
+    background-color: #117a8b;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: white;
+}
+.btn-success:hover {
+    background-color: #1e7e34;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+.btn-danger:hover {
+    background-color: #a71d2a;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+
+/* --- Hero Section (Khu vực chào mừng) --- */
+.hero {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 60px 50px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.hero a {
+    color: #ffc107; /* Màu vàng nổi bật */
+    text-decoration: underline;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.hero a:hover {
+    color: #ffd700;
+}
+
+/* --- Responsive adjustments --- */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+    }
+
+    .header .actions {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .welcome-text {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+
+    .hero {
+        padding: 40px 20px;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+}

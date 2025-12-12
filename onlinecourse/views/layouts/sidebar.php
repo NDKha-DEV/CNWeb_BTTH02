@@ -35,6 +35,7 @@ $is_logged_in = ($role !== -1);
                     <!-- INSTRUCTOR MENU -->
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>instructor/dashboard">Manage Courses</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>course/create">New Course</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>course/manage">My Course</a></li>
 
                 <?php elseif ($role === 0): ?>
                     <!-- STUDENT MENU -->
