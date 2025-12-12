@@ -1,0 +1,120 @@
+/*
+ * File: instructor-manage-courses.css
+ * Mô tả: CSS tùy chỉnh cho trang quản lý khóa học của Giảng viên (dạng bảng).
+ * Giả định đã có Bootstrap 5.
+ */
+
+:root {
+    --primary-color: #0d6efd; /* Bootstrap Blue */
+    --success-color: #198754;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #0dcaf0;
+    --secondary-color: #6c757d;
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+}
+
+body {
+    background-color: var(--light-bg);
+}
+
+.container {
+    max-width: 1400px; /* Mở rộng container cho bảng rộng hơn */
+}
+
+/* --- Header Tùy chỉnh --- */
+h2.text-primary {
+    color: var(--primary-color) !important;
+    font-weight: 700;
+}
+
+/* --- Card và Table --- */
+.card {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+.table-responsive {
+    border-radius: 8px; /* Cắt góc cho container responsive */
+    overflow: hidden; /* Đảm bảo góc bảng được cắt */
+}
+
+.table-light th {
+    font-weight: 600;
+    color: var(--dark-text);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    background-color: #f1f3f5 !important;
+}
+
+/* Các hàng của bảng */
+.table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+/* Căn chỉnh nội dung trong bảng */
+.table td, .table th {
+    vertical-align: middle;
+    padding: 12px;
+}
+
+/* Định dạng cột ID */
+td:first-child {
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+/* Ảnh bìa */
+.img-thumbnail {
+    border: 1px solid var(--border-color);
+}
+
+/* Thông tin tên và thời lượng khóa học */
+.fw-bold.text-dark {
+    font-size: 1rem;
+    line-height: 1.3;
+}
+.text-muted i {
+    margin-right: 5px;
+}
+
+/* Định dạng Giá/Trình độ */
+.text-danger {
+    font-size: 1.1rem;
+    font-weight: 700 !important;
+}
+.badge.rounded-pill {
+    padding: 0.4em 0.7em;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+/* Định dạng Badge Trạng thái */
+td .badge {
+    min-width: 100px; /* Đảm bảo chiều rộng tối thiểu cho thẻ trạng thái */
+    font-size: 0.9em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+}
+
+/* --- Hành động (Buttons) --- */
+td .btn {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Tùy chỉnh màu Info cho nút Bài học */
+.btn-info {
+    background-color: var(--info-color);
+    border-color: var(--info-color);
+    color: white;
+}
+.btn-info:hover {
+    background-color: #0a9cb8;
+    border-color: #0a9cb8;
+}
