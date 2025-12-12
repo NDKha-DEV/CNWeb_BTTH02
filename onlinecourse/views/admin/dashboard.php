@@ -10,12 +10,12 @@ if (!isset($_SESSION['user_id']) || (int)$_SESSION['user_role'] !== 2) {
 $page_title = "Admin Dashboard | Tổng quan Hệ thống";
 
 // Giả định: Dữ liệu thống kê được Controller lấy từ Model (chưa code)
-$stats = [
-    'total_users' => 150,
-    'total_instructors' => 12,
-    'total_courses' => 55,
-    'pending_courses' => 5 // Khóa học chờ duyệt
-];
+// $stats = [
+//     'total_users' => 150,
+//     'total_instructors' => 12,
+//     'total_courses' => 55,
+//     'pending_courses' => 5 // Khóa học chờ duyệt
+// ];
 
 require 'views/layouts/header.php'; // Sử dụng header chung
 ?>

@@ -42,9 +42,23 @@ class AdminController {
 
     public function dashboard() {
         $this->checkAdmin();
-        // Giả định: Có thể gọi các hàm thống kê từ Model nếu cần
-        // Ví dụ: $total_users = $this->userModel->countAll();
-        // Tải View Dashboard
+        
+        // 1. LẤY DỮ LIỆU TỪ MODEL
+        $total_users = $this->userModel->countTotalUsers();
+        $total_instructors = $this->userModel->countTotalInstructors();
+        $total_courses = $this->courseModel->countTotalCourses();
+        $pending_courses = $this->courseModel->countPendingCourses();
+        
+        // 2. TẠO MẢNG THỐNG KÊ ĐỘNG
+        $stats = [
+            'total_users' => $total_users,
+            'total_instructors' => $total_instructors,
+            'total_courses' => $total_courses,
+            'pending_courses' => $pending_courses 
+        ];
+
+        // 3. LOAD VIEW (dashboard.php)
+        // Các biến $stats sẽ tự động được truyền vào view.
         require 'views/admin/dashboard.php';
     }
 

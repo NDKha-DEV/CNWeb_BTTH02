@@ -9,7 +9,7 @@ CREATE TABLE users (
     fullname VARCHAR(255),
     role INT DEFAULT 0,              -- 0: học viên
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-	status TINYINT(1) NOT NULL DEFAULT 1
+	status TINYINT(1) NOT NULL DEFAULT 1 COMMENT '1: Active, 0: Inactive'
 );
 -- bảng categories
 CREATE TABLE categories (
@@ -31,6 +31,7 @@ CREATE TABLE courses (
     image VARCHAR(255),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP,
+    status TINYINT(1) NOT NULL DEFAULT 0 COMMENT '1: Draft, 2: Published, 3: Pending, 4: Rejected',
 
     FOREIGN KEY (instructor_id) REFERENCES users(id),
     FOREIGN KEY (category_id) REFERENCES categories(id)
@@ -69,5 +70,13 @@ CREATE TABLE materials (
     uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (lesson_id) REFERENCES lessons(id)
+);
+-- bảng view_logs
+CREATE TABLE view_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,                  -- NULL nếu là khách (Guest)
+    path VARCHAR(255) NOT NULL,   -- Đường dẫn URL được truy cập (ví dụ: 'admin/dashboard')
+    access_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 

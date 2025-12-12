@@ -242,16 +242,39 @@ class Course{
     }
 
     public function getStudentsByCourse($course_id) {
-    // Kết nối bảng users và enrollments
-    $query = "SELECT u.id, u.username, u.email, u.fullname, e.enrolled_date, e.progress
-              FROM users u
-              JOIN enrollments e ON u.id = e.student_id
-              WHERE e.course_id = :course_id
-              ORDER BY e.enrolled_date DESC";
+        // Kết nối bảng users và enrollments
+        $query = "SELECT u.id, u.username, u.email, u.fullname, e.enrolled_date, e.progress
+                FROM users u
+                JOIN enrollments e ON u.id = e.student_id
+                WHERE e.course_id = :course_id
+                ORDER BY e.enrolled_date DESC";
 
-    $stmt = $this->conn->prepare($query);
-    $stmt->bindParam(":course_id", $course_id);
-    $stmt->execute();
-    return $stmt;
-}
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":course_id", $course_id);
+        $stmt->execute();
+        return $stmt;
+    }
+    /**
+     * Đếm tổng số khóa học (đã được duyệt và chưa duyệt)
+     */
+    public function countTotalCourses() {
+        // Giả định bảng là 'courses'
+        $query = "SELECT COUNT(id) as total FROM courses WHERE status >= 2";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total'] ?? 0;
+    }
+
+    /**
+     * Đếm số khóa học đang chờ duyệt (status = 0)
+     */
+    public function countPendingCourses() {
+        // Giả định cột trạng thái là 'status', 3 là chờ duyệt, 2 là đã duyệt
+        $query = "SELECT COUNT(id) as total FROM courses WHERE status = 3";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total'] ?? 0;
+    }
 }

@@ -149,4 +149,25 @@ class User {
         }
         return false;
     }
+    /**
+     * Đếm tổng số người dùng (bao gồm cả Admin, Giảng viên, Học viên)
+     */
+    public function countTotalUsers() {
+        $query = "SELECT COUNT(id) as total FROM users";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total'] ?? 0;
+    }
+    /**
+     * Đếm tổng số giảng viên (role = 1)
+     */
+    public function countTotalInstructors() {
+        $query = "SELECT COUNT(id) as total FROM users WHERE role = 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total'] ?? 0;
+    }
 }
+?>
