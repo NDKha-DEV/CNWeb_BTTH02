@@ -1,0 +1,73 @@
+/*
+ * File: lesson-material.css
+ * Mô tả: CSS tùy chỉnh cho trang quản lý tài liệu bổ sung của bài học.
+ */
+
+:root {
+    --primary-color: #0d6efd;
+    --success-color: #198754;
+    --secondary-color: #6c757d;
+    --light-bg: #f8f9fa;
+    --border-dashed: #adb5bd;
+}
+
+body {
+    background-color: var(--light-bg);
+}
+
+.container {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+/* --- Thông tin Bài học (Card) --- */
+.card.bg-light.border-primary {
+    border: 1px solid var(--primary-color) !important;
+}
+
+.card-title.text-primary {
+    color: var(--primary-color) !important;
+    font-weight: 700;
+}
+
+.card-body hr {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.row .col-md-3.fw-bold {
+    color: var(--secondary-color);
+}
+
+/* --- Khu vực Upload --- */
+.card-header.bg-success {
+    background-color: var(--success-color) !important;
+}
+
+.border-dashed {
+    border: 2px dashed var(--border-dashed) !important;
+    transition: border-color 0.3s ease;
+}
+
+.border-dashed:hover {
+    border-color: var(--success-color) !important;
+}
+
+/* File Input Customization */
+#material_file {
+    cursor: pointer;
+}
+
+/* --- Danh sách Tài liệu --- */
+.list-group-item {
+    padding: 12px 20px;
+}
+
+.list-group-item a.text-dark:hover {
+    color: var(--primary-color) !important;
+}
+
+.list-group-item .btn-danger-sm {
+    padding: 3px 8px;
+    font-size: 0.75rem;
+}

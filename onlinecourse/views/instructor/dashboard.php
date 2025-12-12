@@ -18,4 +18,4 @@ include './views/layouts/header.php'; // Đây là nơi CSS sẽ được load
     
     <?php include './views/instructor/my_courses.php'; ?> 
     
-    <?php include './views/instructor/footer.php'; ?>
+    <?php include './views/layouts/footer.php'; ?>

@@ -131,7 +131,7 @@ class LessonController {
             if(!$this->checkCourseOwner($course_id)) die("Không có quyền.");
 
             if($this->lessonModel->delete()) {
-                header("Location: " . BASE_URL . "lesson/manage?course_id=" . $course_id);
+                header("Location: " . BASE_URL . "lesson?course_id=" . $course_id);
             }
         }
     }
