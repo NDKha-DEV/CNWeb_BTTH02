@@ -1,7 +1,8 @@
 <?php
-class Lesson {
+class Lesson
+{
     private $con;
-    private $table_name= "lessons";
+    private $table_name = "lessons";
     private $id;
     private $course_id;
     private $title;
@@ -12,84 +13,101 @@ class Lesson {
 
     // ======================================
     // 🔹 GETTER & SETTER
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
         return $this;
     }
-    
-    public function getCourseId() {
+
+    public function getCourseId()
+    {
         return $this->course_id;
     }
-    public function setCourseId($course_id) {
+    public function setCourseId($course_id)
+    {
         $this->course_id = $course_id;
         return $this;
     }
-    
-    public function getTitle() {
+
+    public function getTitle()
+    {
         return $this->title;
     }
-    public function setTitle($title) {
+    public function setTitle($title)
+    {
         $this->title = $title;
         return $this;
     }
-    
-    public function getContent() {
+
+    public function getContent()
+    {
         return $this->content;
     }
-    public function setContent($content) {
+    public function setContent($content)
+    {
         $this->content = $content;
         return $this;
     }
-    
-    public function getVideoUrl() {
+
+    public function getVideoUrl()
+    {
         return $this->video_url;
     }
-    public function setVideoUrl($video_url) {
+    public function setVideoUrl($video_url)
+    {
         $this->video_url = $video_url;
         return $this;
     }
-    
-    public function getLessonOrder() {
+
+    public function getLessonOrder()
+    {
         return $this->lesson_order;
     }
-    public function setLessonOrder($lesson_order) {
+    public function setLessonOrder($lesson_order)
+    {
         $this->lesson_order = $lesson_order;
         return $this;
     }
-    
-    public function getCreateAt() {
+
+    public function getCreateAt()
+    {
         return $this->create_at;
     }
-    public function setCreateAt($create_at) {
+    public function setCreateAt($create_at)
+    {
         $this->create_at = $create_at;
         return $this;
     }
     // ======================================
 
-    public function __construct($db){
+    public function __construct($db)
+    {
         $this->con = $db;
     }
 
     // Lấy tất cả bài học thuộc về 1 khóa học
-    public function getByCourseId($course_id) {
-        $query = "SELECT * FROM " . $this->table_name. " WHERE course_id = :course_id ORDER BY lesson_order ASC";
+    public function getByCourseId($course_id)
+    {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE course_id = :course_id ORDER BY lesson_order ASC";
         $stmt = $this->con->prepare($query);
         $stmt->bindParam(':course_id', $course_id);
         $stmt->execute();
         return $stmt;
     }
 
-    public function readOne() {
+    public function readOne()
+    {
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id LIMIT 1";
         $stmt = $this->con->prepare($query);
         $stmt->bindParam(':id', $this->id);
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($row) {
+        if ($row) {
             $this->course_id = $row['course_id'];
             $this->title = $row['title'];
             $this->content = $row['content'];
@@ -100,11 +118,12 @@ class Lesson {
         return false;
     }
 
-    public function create() {
+    public function create()
+    {
         $query = "INSERT INTO " . $this->table_name . " 
                   SET course_id=:course_id, title=:title, content=:content, 
                       video_url=:video_url, lesson_order=:lesson_order";
-        
+
         $stmt = $this->con->prepare($query);
 
         // Clean data
@@ -118,15 +137,16 @@ class Lesson {
         $stmt->bindParam(':video_url', $this->video_url);
         $stmt->bindParam(':lesson_order', $this->lesson_order);
 
-        if($stmt->execute()) return true;
+        if ($stmt->execute()) return true;
         return false;
     }
     // 4. Cập nhật bài học
-    public function update() {
+    public function update()
+    {
         $query = "UPDATE " . $this->table_name . " 
                   SET title=:title, content=:content, video_url=:video_url, lesson_order=:lesson_order
                   WHERE id=:id";
-        
+
         $stmt = $this->con->prepare($query);
 
         $this->title = htmlspecialchars(strip_tags($this->title));
@@ -138,16 +158,34 @@ class Lesson {
         $stmt->bindParam(':lesson_order', $this->lesson_order);
         $stmt->bindParam(':id', $this->id);
 
-        if($stmt->execute()) return true;
+        if ($stmt->execute()) return true;
         return false;
     }
     // 5. Xóa bài học
-    public function delete() {
+    public function delete()
+    {
         $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
         $stmt = $this->con->prepare($query);
         $stmt->bindParam(':id', $this->id);
-        if($stmt->execute()) return true;
+        if ($stmt->execute()) return true;
         return false;
     }
+    public function getNextOrder($course_id)
+    {
+        // Tìm số thứ tự lớn nhất hiện tại của khóa học này
+        $query = "SELECT MAX(lesson_order) as max_order FROM " . $this->table_name . " WHERE course_id = :course_id";
 
-}?>
+        $stmt = $this->con->prepare($query);
+        $stmt->bindParam(':course_id', $course_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Nếu chưa có bài nào (null) thì trả về 1. Nếu có rồi thì lấy max + 1
+        if ($row['max_order'] !== null) {
+            return $row['max_order'] + 1;
+        } else {
+            return 1;
+        }
+    }
+}
