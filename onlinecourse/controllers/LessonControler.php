@@ -56,7 +56,7 @@ class LessonController {
         if(!$course_id || !$this->checkCourseOwner($course_id)) {
             die("Lỗi: Khóa học không tồn tại hoặc bạn không có quyền.");
         }
-
+        $nextOrder = $this->lessonModel->getNextOrder($course_id);
         require_once 'views/instructor/lessons/create.php';
     }
 
