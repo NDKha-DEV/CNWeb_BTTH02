@@ -80,12 +80,13 @@ $current_user_id = $_SESSION['user_id'] ?? NULL;
 
 // Ghi Log lượt xem trước khi thực thi Controller
 // Chỉ ghi log nếu không phải là yêu cầu tài nguyên tĩnh (css, js, images)
-
-//3.
-// if (!preg_match('/\.(css|js|png|jpg|jpeg|gif|ico)$/i', $request_uri)) {
-//     // Dùng $request_uri để lưu đường dẫn đã làm sạch
-//     $viewLog->logView($current_user_id, $request_uri); 
-// }
+if (!preg_match('/\.(css|js|png|jpg|jpeg|gif|ico)$/i', $request_uri)) {
+    // Dùng $request_uri để lưu đường dẫn đã làm sạch
+    // Chỉ log nếu database connection thành công
+    if ($db !== null) {
+        $viewLog->logView($current_user_id, $request_uri);
+    }
+}
 
 switch ($request_uri) {
     case '/':

@@ -8,36 +8,9 @@ if (!isset($_SESSION['user_id']) || (int)$_SESSION['user_role'] !== 2) {
 }
 
 $page_title = "Admin Dashboard | Tổng quan Hệ thống";
-
-// Giả định: Dữ liệu thống kê được Controller lấy từ Model (chưa code)
-// $stats = [
-//     'total_users' => 150,
-//     'total_instructors' => 12,
-//     'total_courses' => 55,
-//     'pending_courses' => 5 // Khóa học chờ duyệt
-// ];
-
-require 'views/layouts/header.php'; // Sử dụng header chung
+$css_files=['admin-dashboard.css'];
+include './views/layouts/header.php'; // Sử dụng header chung
 ?>
-
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title><?= $page_title ?></title>
-    <style>
-        .dashboard-container { max-width: 1200px; margin: 20px auto; padding: 20px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: #f0f0f0; padding: 15px; border-radius: 8px; text-align: center; }
-        .stat-card h3 { margin: 0 0 5px 0; color: #333; }
-        .stat-card p { font-size: 2em; margin: 5px 0 0 0; font-weight: bold; }
-        .admin-nav ul { list-style: none; padding: 0; }
-        .admin-nav li { margin-bottom: 10px; }
-        .admin-nav a { display: block; padding: 10px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; }
-        .admin-nav a:hover { background: #0056b3; }
-    </style>
-</head>
-<body>
 
     <div class="dashboard-container">
         <h1>Chào mừng, Quản trị viên!</h1>
@@ -76,9 +49,7 @@ require 'views/layouts/header.php'; // Sử dụng header chung
         </nav>
     </div>
 
-</body>
-</html>
 
 <?php 
-require 'views/layouts/footer.php'; 
+include './views/layouts/footer.php'; 
 ?>

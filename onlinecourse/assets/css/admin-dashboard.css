@@ -1,0 +1,125 @@
+/* ----------------------------------------
+   GENERAL
+----------------------------------------- */
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-top: 40px;
+    color: #222;
+    font-size: 24px;
+    border-left: 4px solid #007bff;
+    padding-left: 10px;
+}
+
+/* ----------------------------------------
+   FLASH MESSAGE (optional)
+----------------------------------------- */
+.alert {
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.alert-success { background: #d4edda; color: #155724; }
+.alert-danger  { background: #f8d7da; color: #721c24; }
+
+/* ----------------------------------------
+   STATISTICS CARDS
+----------------------------------------- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    transition: transform .2s ease, box-shadow .2s ease;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.stat-card h3 {
+    font-size: 18px;
+    color: #555;
+}
+
+.stat-card p {
+    font-size: 28px;
+    font-weight: bold;
+    color: #111;
+    margin-top: 10px;
+}
+
+/* ----------------------------------------
+   ADMIN NAVIGATION
+----------------------------------------- */
+.admin-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    display: grid;
+    gap: 15px;
+}
+
+.admin-nav ul li {
+    width: 100%;
+}
+
+.admin-nav a {
+    display: block;
+    padding: 14px 20px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background .2s, transform .2s;
+}
+
+.admin-nav a:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Color overrides */
+.admin-nav a[href*="create-instructor"] { background: #28a745; }
+.admin-nav a[href*="logout"] { background: #dc3545; }
+
+.admin-nav a[href*="create-instructor"]:hover { background: #1e7e34; }
+.admin-nav a[href*="logout"]:hover { background: #b52d3a; }
+
+/* ----------------------------------------
+   RESPONSIVE
+----------------------------------------- */
+@media (max-width: 600px) {
+    h1 { font-size: 26px; }
+    .stat-card p { font-size: 22px; }
+    .admin-nav a { padding: 12px; font-size: 14px; }
+}
