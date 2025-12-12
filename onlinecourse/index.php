@@ -1,7 +1,6 @@
 <?php
 // onlinecourse/index.php
 // FRONT CONTROLLER
-
 // ------------------------------------
 // 1. THIẾT LẬP MÔI TRƯỜNG & BIẾN TOÀN CỤC
 // ------------------------------------
@@ -15,7 +14,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Định nghĩa thư mục gốc của ứng dụng trên URL (quan trọng cho chuyển hướng)
 // Thay thế '/onlinecourse/' nếu thư mục ứng dụng của bạn khác.
-define('BASE_URL', '/onlinecourse/'); 
+define('BASE_URL', '/CNWeb_BTTH02/onlinecourse/'); 
 
 
 // ------------------------------------
@@ -46,7 +45,9 @@ require_once 'controllers/AuthController.php';
 require_once 'controllers/AdminController.php';
 // Yêu cầu Model cho Log
 require_once 'config/Database.php'; // Cần Database để khởi tạo Model
-require_once 'models/ViewLog.php';
+
+//1. require_once 'models/ViewLog.php';
+
 // Khởi tạo Database (Nếu chưa có)
 $database = new Database();
 $db = $database->getConnection();
@@ -56,7 +57,7 @@ $authController = new AuthController();
 // $courseController = new CourseController();
 $adminController = new AdminController();
 // Khởi tạo Model Log Mới
-$viewLog = new ViewLog($db);
+//2. $viewLog = new ViewLog($db);
 
 require_once 'controllers/CourseController.php';
 $course = new CourseController();
@@ -79,10 +80,12 @@ $current_user_id = $_SESSION['user_id'] ?? NULL;
 
 // Ghi Log lượt xem trước khi thực thi Controller
 // Chỉ ghi log nếu không phải là yêu cầu tài nguyên tĩnh (css, js, images)
-if (!preg_match('/\.(css|js|png|jpg|jpeg|gif|ico)$/i', $request_uri)) {
-    // Dùng $request_uri để lưu đường dẫn đã làm sạch
-    $viewLog->logView($current_user_id, $request_uri); 
-}
+
+//3.
+// if (!preg_match('/\.(css|js|png|jpg|jpeg|gif|ico)$/i', $request_uri)) {
+//     // Dùng $request_uri để lưu đường dẫn đã làm sạch
+//     $viewLog->logView($current_user_id, $request_uri); 
+// }
 
 switch ($request_uri) {
     case '/':
@@ -251,10 +254,13 @@ switch ($request_uri) {
         break;
 
     // --- Thực hiện hiển thị bài học ---
-    case 'lesson/student':
+    case 'lessons/student':
         $lessonController->show();
         break;
-
+        
+    case 'lesson/student':
+        $lessonController->showLessonDetail();
+        break;
     // --- Hiển thị các khóa học đã đăng ký ---
     case 'enrollment':
         $enroll->myCourses();

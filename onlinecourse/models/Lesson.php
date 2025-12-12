@@ -150,16 +150,4 @@ class Lesson {
         return false;
     }
 
-    // Lấy danh sách bài học theo khóa học
-    public function getLessonById($lesson_id) {
-        $query = "SELECT * FROM " . $this->table_name . " 
-                WHERE id = :id 
-                LIMIT 1";
-
-        $stmt = $this->con->prepare($query);
-        $stmt->bindParam(":id", $lesson_id, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return $stmt;
-    }
 }?>
