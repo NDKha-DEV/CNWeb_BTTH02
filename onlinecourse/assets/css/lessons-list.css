@@ -1,0 +1,96 @@
+/*
+ * File: lessons-list.css
+ * Mô tả: CSS cho trang Danh sách Bài học của sinh viên.
+ */
+
+:root {
+    --primary-color: #007bff; /* Xanh dương */
+    --secondary-color: #6c757d; /* Xám đậm */
+    --light-bg: #f8f9fa; /* Nền sáng */
+    --card-bg: #ffffff; /* Nền nội dung */
+    --border-color: #dee2e6;
+    --text-color: #343a40;
+}
+
+body {
+    background-color: var(--light-bg);
+    font-family: Arial, sans-serif;
+}
+
+/* --- Container Chính --- */
+.lessons-container {
+    padding: 30px;
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+/* --- Danh sách Bài học (The List) --- */
+.lesson-list {
+    list-style: none; /* Loại bỏ dấu chấm mặc định */
+    padding: 0;
+}
+
+.lesson-list li {
+    margin-bottom: 10px;
+}
+
+.lesson-list a {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: var(--light-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+}
+
+.lesson-list a:hover {
+    background-color: #e9ecef;
+    border-color: var(--primary-color);
+    transform: translateX(5px);
+    color: var(--primary-color);
+}
+
+/* Thêm biểu tượng trước mỗi bài học */
+.lesson-list a::before {
+    content: "📚"; /* Biểu tượng sách */
+    margin-right: 15px;
+    font-size: 1.2rem;
+    line-height: 1; /* Căn giữa biểu tượng */
+}
+
+/* --- Liên kết trở về --- */
+.back-link {
+    margin-top: 40px;
+    text-align: left;
+}
+
+.back-link a {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: var(--secondary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+}
+
+.back-link a:hover {
+    background-color: #5a6268;
+}
