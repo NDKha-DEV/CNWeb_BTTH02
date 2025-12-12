@@ -6,11 +6,11 @@ require_once 'config/Database.php';
 
 // Thay đổi thông tin Admin bạn muốn tạo
 $admin_data = [
-    'username' => 'gva',
-    'email'    => 'gva@gmail.com',
+    'username' => 'admin',
+    'email'    => 'admin@gmail.com',
     'password' => '123456', // Mật khẩu dạng văn bản
-    'fullname' => 'GV A',
-    'role'     => 1, // 2: Quản trị viên
+    'fullname' => 'Quản Trị Viên',
+    'role'     => 2, // 2: Quản trị viên
     'status'=> 1  // 1: Kích hoạt
 ];
 

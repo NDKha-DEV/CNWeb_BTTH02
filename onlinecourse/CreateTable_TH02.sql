@@ -1,5 +1,16 @@
 CREATE DATABASE onlinecourse;
 USE onlinecourse;
+
+-- ----------------------------------------------------
+-- 1. DROP BẢNG (Để chạy lại được nhiều lần)
+-- ----------------------------------------------------
+DROP TABLE IF EXISTS enrollments;
+DROP TABLE IF EXISTS materials;
+DROP TABLE IF EXISTS lessons;
+DROP TABLE IF EXISTS courses;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS view_logs;
+DROP TABLE IF EXISTS users;
 -- bảng user
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
