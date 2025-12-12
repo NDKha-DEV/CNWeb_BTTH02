@@ -18,14 +18,19 @@ class Enrollment {
     //CỤM CHỨC NĂNG 3: HỌC VIÊN ĐĂNG KÝ KHÓA HỌC
 
     public function enrollCourse() {
+
+        // Tạo số tiến độ random từ 0 đến 100
+        $random_progress = rand(0, 100);
+
         $query = "INSERT INTO " . $this->table_name . "
-                  (course_id, student_id, enrolled_date, status, progress)
-                  VALUES (:course_id, :student_id, NOW(), 'active', 0)";
+                (course_id, student_id, enrolled_date, status, progress)
+                VALUES (:course_id, :student_id, NOW(), 'active', :progress)";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":course_id", $this->course_id);
         $stmt->bindParam(":student_id", $this->student_id);
+        $stmt->bindParam(":progress", $random_progress, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -63,6 +68,4 @@ class Enrollment {
 
         return $stmt;
     }
-
-
 }

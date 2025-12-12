@@ -238,27 +238,58 @@ class LessonController {
     // HIỂN THỊ CHI TIẾT 1 BÀI HỌC + TÀI LIỆU
     // ================================================
     public function show() {
+        if (!isset($_GET['course_id'])) {
+            echo "Thiếu ID khóa học!";
+            exit;
+        }
+
+        $course_id = $_GET['course_id'];
+
+        // Lấy toàn bộ bài học thuộc khóa học
+        $lessonStmt = $this->lessonModel->getByCourseId($course_id);
+        $lessons = $lessonStmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$lessons) {
+            echo "Không tìm thấy bài học nào!";
+            exit;
+        }
+
+        // Gọi view hiển thị danh sách bài học
+        include __DIR__ . "/../views/student/my_courses.php";
+    }
+
+    public function showLessonDetail() {
         if (!isset($_GET['lesson_id'])) {
             echo "Thiếu ID bài học!";
             exit;
         }
-
+        $course_id = $_GET['course_id'];
         $lesson_id = $_GET['lesson_id'];
 
-        // Lấy bài học
-        $lessonStmt = $this->lessonModel->getLessonById($lesson_id);
-        $lesson = $lessonStmt->fetch(PDO::FETCH_ASSOC);
+        // ---------- LẤY BÀI HỌC ----------
+        $this->lessonModel->setId($lesson_id);  // gán ID cho model
+        $found = $this->lessonModel->readOne();
 
-        if (!$lesson) {
+        if (!$found) {
             echo "Không tìm thấy bài học!";
             exit;
         }
 
-        // Lấy tài liệu đính kèm
+        // Sau readOne(), dữ liệu nằm ngay trong $this->lessonModel
+        $lesson = [
+            "id" => $lesson_id,
+            "title" => $this->lessonModel->getTitle(),
+            "content" => $this->lessonModel->getContent(),
+            "video_url" => $this->lessonModel->getVideoUrl(),
+            "lesson_order" => $this->lessonModel->getLessonOrder(),
+            "course_id" => $this->lessonModel->getCourseId()
+        ];
+
+        // ---------- LẤY TẤT CẢ MATERIAL ----------
         $materialsStmt = $this->materialModel->getMaterialsByLesson($lesson_id);
         $materials = $materialsStmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Gọi view hiển thị
-        include __DIR__ . "/../views/student/my_courses.php";
+        // ---------- GỌI VIEW CHI TIẾT ----------
+        include __DIR__ . "/../views/student/lesson_detail.php";
     }
 }

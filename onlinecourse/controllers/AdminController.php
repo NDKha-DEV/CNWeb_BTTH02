@@ -10,7 +10,7 @@ class AdminController {
     private $userModel;
     private $categoryModel;
     private $courseModel; // Thêm CourseModel để duyệt khóa học
-    private $viewLog;
+    //4. private $viewLog;
 
     public function __construct() {
         if (session_status() == PHP_SESSION_NONE) {
@@ -21,7 +21,7 @@ class AdminController {
         $this->userModel = new User($db);
         $this->categoryModel = new Category($db);
         $this->courseModel = new Course($db); // Khởi tạo
-        $this->viewLog = new ViewLog($db);
+        //5. $this->viewLog = new ViewLog($db);
     }
     
     /**
