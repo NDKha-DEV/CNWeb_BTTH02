@@ -1,0 +1,206 @@
+/*
+ * File: my-courses.css
+ * Mô tả: CSS cho trang "Khóa học đã đăng ký" của người học.
+ */
+
+/* --- Thiết lập cơ bản --- */
+:root {
+    --primary-color: #007bff; /* Xanh dương */
+    --success-color: #28a745; /* Xanh lá (Đang học/Hoàn thành) */
+    --complete-color: #17a2b8; /* Xanh da trời (Hoàn thành) */
+    --danger-color: #dc3545; /* Đỏ */
+    --light-bg: #f8f9fa; /* Nền sáng */
+    --card-bg: #ffffff; /* Nền thẻ/Bảng */
+    --border-color: #e9ecef; /* Màu đường viền nhẹ */
+    --text-color: #343a40;
+}
+
+body {
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+/* --- Thiết kế Bảng (Table) --- */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+thead tr {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: left;
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+/* Dòng xen kẽ để dễ đọc */
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+    background-color: #e9f5ff; /* Hiệu ứng hover nhẹ */
+}
+
+/* Căn chỉnh nội dung cột */
+td:nth-child(5) { /* Tiến độ */
+    text-align: center;
+    width: 100px; /* Đặt chiều rộng cố định cho cột tiến độ */
+}
+
+td:nth-child(6) { /* Trạng thái */
+    text-align: center;
+    font-weight: 500;
+}
+
+td:last-child { /* Chi tiết */
+    text-align: center;
+    width: 80px;
+}
+
+/* --- Thiết kế Cột Tiến độ (Progress Bar) --- */
+
+/* Thêm thanh tiến độ ảo */
+.progress-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 5px;
+    height: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+/* Cải thiện hiển thị Tiến độ */
+/* Thay vì chỉ hiển thị số %, chúng ta sẽ tạo thêm thanh tiến độ trực quan trong PHP */
+/* Giả sử bạn sửa lại code PHP như sau:
+    <td>
+        <div class="progress-cell">
+            <span class="progress-text"><?= htmlspecialchars($item['progress']) ?>%</span>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: <?= $item['progress'] ?>%;"></div>
+            </div>
+        </div>
+    </td>
+*/
+
+/* --- Thiết kế Trạng thái (Status Tags) --- */
+
+.status-tag {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: white;
+}
+
+.status-active {
+    background-color: var(--success-color);
+}
+
+.status-completed {
+    background-color: var(--complete-color);
+}
+
+.status-cancelled {
+    background-color: var(--secondary-color); /* Màu xám */
+}
+
+/* Áp dụng thẻ status vào PHP: */
+/*
+    <td>
+        <?php if ($item['status'] === 'active'): ?>
+            <span class="status-tag status-active">Đang học</span>
+        <?php elseif ($item['status'] === 'completed'): ?>
+            <span class="status-tag status-completed">Hoàn thành</span>
+        <?php else: ?>
+            <span class="status-tag status-cancelled">Đã hủy</span>
+        <?php endif; ?>
+    </td>
+*/
+
+/* --- Liên kết Chi tiết & Trở về Trang chủ --- */
+td a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+td a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+p a { /* Trở về Trang Chủ */
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+p a:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 992px) {
+    /* Cho phép cuộn ngang bảng trên thiết bị nhỏ */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    table {
+        display: block;
+        min-width: 800px; /* Đảm bảo bảng không quá hẹp */
+    }
+
+    .container {
+        padding: 15px;
+    }
+}
