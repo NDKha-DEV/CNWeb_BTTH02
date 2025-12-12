@@ -51,7 +51,7 @@
                 </td>
 
                 <td>
-                    <a href="<?php echo BASE_URL; ?>lesson/student?lesson_id=<?= $item['course_id'] ?>">Xem</a>
+                    <a href="<?php echo BASE_URL; ?>lessons/student?course_id=<?= $item['course_id'] ?>">Xem</a>
                 </td>
             </tr>
             <?php endforeach; ?>
