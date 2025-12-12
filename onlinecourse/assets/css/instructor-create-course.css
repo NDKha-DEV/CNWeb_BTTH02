@@ -1,0 +1,149 @@
+/*
+ * File: course-form.css
+ * Mô tả: CSS tùy chỉnh cho trang Tạo Khóa học mới.
+ */
+
+:root {
+    --primary-color: #007bff; /* Xanh dương */
+    --success-color: #28a745; /* Xanh lá */
+    --danger-color: #dc3545; /* Đỏ */
+    --secondary-color: #6c757d; /* Xám */
+    --light-bg: #f8f9fa; 
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+    --input-focus-color: rgba(0, 123, 255, 0.25);
+    --dark-text: #343a40;
+}
+
+body {
+    background-color: var(--light-bg);
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+/* --- Định dạng chung cho Form Group --- */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--dark-text);
+}
+
+/* Định dạng Input, Select, Textarea */
+.container input:not([type="checkbox"]), 
+.container select, 
+.container textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: var(--dark-text);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Hiệu ứng focus */
+.container input:focus, 
+.container select:focus, 
+.container textarea:focus {
+    border-color: var(--primary-color);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem var(--input-focus-color);
+}
+
+.container textarea {
+    resize: vertical;
+}
+
+/* Định dạng đặc biệt cho Input File (Ảnh bìa) */
+.form-group input[type="file"] {
+    padding: 10px 0; /* Giảm padding ngang mặc định */
+    border: none;
+    background-color: transparent;
+}
+
+
+/* --- Định dạng Nút Hành động --- */
+hr {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 10px 25px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    border: none;
+    display: inline-block;
+}
+
+.btn-submit {
+    background-color: var(--success-color);
+    color: white;
+    margin-right: 15px;
+}
+
+.btn-submit:hover {
+    background-color: #1e7e34;
+}
+
+.btn-back {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+}
+
+/* Điều chỉnh khoảng cách trong div flex */
+.container form div[style*="display: flex"] {
+    margin-bottom: 20px;
+}
+.container form div[style*="flex: 1"] {
+    /* Đã được xử lý bởi flex: 1 và gap 20px */
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    /* Chuyển sang stack vertical trên màn hình nhỏ */
+    .container form div[style*="display: flex"] {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .container form div[style*="flex: 1"] {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
