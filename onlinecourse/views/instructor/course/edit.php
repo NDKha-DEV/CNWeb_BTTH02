@@ -1,4 +1,12 @@
-<?php include 'views/layouts/header.php'; ?>
+<?php 
+// Đảm bảo tệp header.php có thể sử dụng các biến này
+$page_title = 'Chỉnh sửa Khóa học: ' . htmlspecialchars($this->courseModel->title ?? 'N/A');
+// Giả định bạn sử dụng CSS tương tự form tạo mới, hoặc tạo một tệp riêng (ví dụ: course-edit.css)
+// Nếu bạn sử dụng Bootstrap 5, hầu hết các style đã ổn, nhưng tôi thêm một tệp tùy chỉnh nếu bạn muốn thêm style riêng.
+$css_files = ['course-form.css']; 
+
+include './views/layouts/header.php'; // Đã thêm thẻ mở PHP
+?>
 
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
@@ -10,7 +18,7 @@
                 </div>
                 
                 <div class="card-body p-4">
-                    <form action="<?php echo BASE_URL; ?>course/edit?id=<?php echo $this->courseModel->id; ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?php echo BASE_URL; ?>course/edit?id=<?php echo htmlspecialchars($this->courseModel->id); ?>" method="POST" enctype="multipart/form-data">
 
                         <div class="mb-3">
                             <label for="title" class="form-label fw-bold">Tiêu đề khóa học <span class="text-danger">*</span></label>
@@ -25,9 +33,12 @@
                                     <option value="">-- Chọn danh mục --</option>
                                     <?php 
                                     if(isset($categories)){
+                                        // Reset con trỏ (chỉ cần thiết nếu $categories là PDOStatement và đã fetch trước đó)
+                                        // $categories->execute(); // Chỉ cần nếu $categories là PDOStatement và được tái sử dụng
                                         while ($cat = $categories->fetch(PDO::FETCH_ASSOC)) {
+                                            // Sử dụng htmlspecialchars cho an toàn
                                             $selected = ($cat['id'] == $this->courseModel->category_id) ? 'selected' : '';
-                                            echo "<option value='{$cat['id']}' $selected>{$cat['name']}</option>";
+                                            echo "<option value='".htmlspecialchars($cat['id'])."' $selected>".htmlspecialchars($cat['name'])."</option>";
                                         }
                                     }
                                     ?>
@@ -50,14 +61,14 @@
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
                                     <input type="number" class="form-control" id="price" name="price" 
-                                           value="<?php echo $this->courseModel->price; ?>" min="0" step="0.01">
+                                           value="<?php echo htmlspecialchars($this->courseModel->price); ?>" min="0" step="0.01">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="duration" class="form-label fw-bold">Thời lượng (tuần)</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" id="duration" name="duration_weeks" 
-                                           value="<?php echo $this->courseModel->duration_weeks; ?>" min="1">
+                                           value="<?php echo htmlspecialchars($this->courseModel->duration_weeks); ?>" min="1">
                                     <span class="input-group-text">Tuần</span>
                                 </div>
                             </div>
@@ -77,7 +88,7 @@
                                         $imgName = !empty($this->courseModel->image) ? $this->courseModel->image : 'default.jpg';
                                         $webPath = BASE_URL . "assets/uploads/courses/" . $imgName;
                                     ?>
-                                    <img src="<?php echo $webPath; ?>" alt="Current Course Image" class="img-thumbnail mb-3" style="max-height: 200px; object-fit: cover;">
+                                    <img src="<?php echo htmlspecialchars($webPath); ?>" alt="Current Course Image" class="img-thumbnail mb-3" style="max-height: 200px; object-fit: cover;">
                                     
                                     <div class="input-group">
                                         <input type="file" class="form-control" name="image" accept="image/*" id="inputGroupFile02">
@@ -97,3 +108,13 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-save"></i> Lưu cập nhật
                             </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<?php include './views/layouts/footer.php'; ?>
