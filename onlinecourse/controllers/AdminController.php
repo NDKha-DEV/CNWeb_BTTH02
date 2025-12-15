@@ -4,13 +4,13 @@
 require_once 'config/Database.php';
 require_once 'models/User.php';
 require_once 'models/Category.php';
-require_once 'models/Course.php'; // Cần để duyệt khóa học
+require_once 'models/Course.php'; 
 
 class AdminController {
     private $userModel;
     private $categoryModel;
-    private $courseModel; // Thêm CourseModel để duyệt khóa học
-    //4. private $viewLog;
+    private $courseModel; 
+    private $viewLog;
 
     public function __construct() {
         if (session_status() == PHP_SESSION_NONE) {
@@ -20,8 +20,8 @@ class AdminController {
         $db = $database->getConnection();
         $this->userModel = new User($db);
         $this->categoryModel = new Category($db);
-        $this->courseModel = new Course($db); // Khởi tạo
-        //5. $this->viewLog = new ViewLog($db);
+        $this->courseModel = new Course($db); 
+        $this->viewLog = new ViewLog($db);
     }
     
     /**
@@ -271,7 +271,6 @@ class AdminController {
     
     public function approveCourse() {
         $this->checkAdmin();
-        // Cần thêm phương thức approve() vào Course.php
         // Xử lý logic phê duyệt khóa học tại đây
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id']) && isset($_POST['action'])) {
             

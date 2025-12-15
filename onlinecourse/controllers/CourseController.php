@@ -303,7 +303,7 @@ public function listStudents() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
             $course_id = $_POST['course_id'];
             
-            // ❗ Trạng thái 3: Pending (Chờ duyệt)
+            // Trạng thái 3: Pending (Chờ duyệt)
             $new_status = 3; 
 
             if ($this->courseModel->updateStatus($course_id, $new_status)) {

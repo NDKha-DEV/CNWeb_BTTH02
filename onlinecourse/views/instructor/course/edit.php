@@ -1,8 +1,7 @@
 <?php 
 // Đảm bảo tệp header.php có thể sử dụng các biến này
 $page_title = 'Chỉnh sửa Khóa học: ' . htmlspecialchars($this->courseModel->title ?? 'N/A');
-// Giả định bạn sử dụng CSS tương tự form tạo mới, hoặc tạo một tệp riêng (ví dụ: course-edit.css)
-// Nếu bạn sử dụng Bootstrap 5, hầu hết các style đã ổn, nhưng tôi thêm một tệp tùy chỉnh nếu bạn muốn thêm style riêng.
+// Giả định bạn sử dụng CSS form tạo mới
 $css_files = ['course-form.css']; 
 
 include './views/layouts/header.php'; // Đã thêm thẻ mở PHP

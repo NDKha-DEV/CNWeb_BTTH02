@@ -6,8 +6,6 @@ $css_files = ['instructor-create-course.css']; // Khai báo tệp CSS
 // Giả định $page_title và $css_files được sử dụng trong header.php
 include './views/layouts/header.php'; 
 
-// Lưu ý: Bạn cần đảm bảo đã tạo file header.php
-// và nó có chứa logic load CSS dựa trên $css_files.
 ?>
 
 <div class="container">

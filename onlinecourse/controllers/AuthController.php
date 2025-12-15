@@ -53,7 +53,7 @@ class AuthController{
                 $_SESSION['user_role'] = (int)$user['role']; // 0: Student, 1: Instructor, 2: Admin
                 $_SESSION['username'] = $user['username'];
                 
-                // 4. Chuyển hướng thành công (đến trang chào mừng)
+                // 4. Chuyển hướng thành công
                 //header('Location: ' . BASE_URL . 'welcome');
                 if ((int)$user['role'] === 2) {
                     // Nếu là Admin, chuyển hướng đến Dashboard Admin
@@ -125,7 +125,6 @@ class AuthController{
         header('Location: ' . BASE_URL);
         exit;
     }
-    // ... (Các phương thức khác như welcome() và logout() đã được hướng dẫn trước) ...
     //Kiểm tra đã đăng nhập hay chưa;
     public static function isLoggedIn(){
         return isset($_SESSION['user_id']);
